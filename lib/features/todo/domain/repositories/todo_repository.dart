@@ -13,6 +13,18 @@ abstract class TodoRepository {
   /// Watches trashed tasks (i.e. isDeleted == true).
   Stream<List<Task>> watchTrashedTasks();
 
+  /// Retrieves all tasks in the database.
+  Future<List<Task>> getTasks();
+
+  /// Retrieves only active tasks.
+  Future<List<Task>> getActiveTasks();
+
+  /// Retrieves archived tasks.
+  Future<List<Task>> getArchivedTasks();
+
+  /// Retrieves trashed tasks.
+  Future<List<Task>> getTrashedTasks();
+
   /// Retrieves a task by its unique ID.
   Future<Task?> getTask(String id);
 
