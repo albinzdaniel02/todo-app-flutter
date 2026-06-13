@@ -50,11 +50,11 @@ This checklist tracks progress throughout the implementation phase. Each task co
 - [x] **P1-1**: Implement `Subtask` database model with Hive annotations and run code generator.
 - [x] **P1-2**: Implement `Category` database model with Hive annotations and run code generator.
 - [x] **P1-3**: Implement main `Task` database model containing subtasks list, category relationships, and priority enum mapping. Run generator.
-- [ ] **P1-4**: Implement database bootstrapper in `main.dart` (initialize Hive, register type adapters, and open boxes).
+- [x] **P1-4**: Implement database bootstrapper in `main.dart` (initialize Hive, register type adapters, and open boxes).
 
 ### P1 Exit Checks
-- [ ] `g.dart` adapters successfully generated for all Hive models.
-- [ ] Database bootstraps successfully without errors on app startup.
+- [x] `g.dart` adapters successfully generated for all Hive models.
+- [x] Database bootstraps successfully without errors on app startup.
 
 ---
 
