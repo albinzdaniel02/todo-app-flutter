@@ -1,4 +1,4 @@
-import 'package:todo_app/features/todo/data/models/category.dart';
+import 'package:todo_app/features/category/domain/entities/category.dart';
 
 abstract class CategoryRepository {
   /// Watches all categories in the database.

@@ -1,4 +1,4 @@
-import 'package:todo_app/features/todo/data/models/task.dart';
+import 'package:todo_app/features/todo/domain/entities/task.dart';
 
 abstract class TodoRepository {
   /// Watches all tasks in the database.

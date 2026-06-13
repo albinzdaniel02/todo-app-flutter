@@ -24,16 +24,16 @@ void main() {
     test('should register adapters and open boxes successfully', () async {
       // Register type adapters
       if (!Hive.isAdapterRegistered(1)) {
-        Hive.registerAdapter(SubtaskAdapter());
+        Hive.registerAdapter(SubtaskModelAdapter());
       }
       if (!Hive.isAdapterRegistered(2)) {
-        Hive.registerAdapter(CategoryAdapter());
+        Hive.registerAdapter(CategoryModelAdapter());
       }
       if (!Hive.isAdapterRegistered(3)) {
-        Hive.registerAdapter(TaskPriorityAdapter());
+        Hive.registerAdapter(TaskPriorityModelAdapter());
       }
       if (!Hive.isAdapterRegistered(0)) {
-        Hive.registerAdapter(TaskAdapter());
+        Hive.registerAdapter(TaskModelAdapter());
       }
 
       expect(Hive.isAdapterRegistered(1), isTrue); // Subtask
@@ -42,8 +42,8 @@ void main() {
       expect(Hive.isAdapterRegistered(0), isTrue); // Task
 
       // Open boxes
-      final tasksBox = await Hive.openBox<Task>('tasks');
-      final categoriesBox = await Hive.openBox<Category>('categories');
+      final tasksBox = await Hive.openBox<TaskModel>('tasks');
+      final categoriesBox = await Hive.openBox<CategoryModel>('categories');
 
       expect(tasksBox.isOpen, isTrue);
       expect(categoriesBox.isOpen, isTrue);

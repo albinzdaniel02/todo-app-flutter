@@ -6,17 +6,17 @@ part of 'subtask.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SubtaskAdapter extends TypeAdapter<Subtask> {
+class SubtaskModelAdapter extends TypeAdapter<SubtaskModel> {
   @override
   final int typeId = 1;
 
   @override
-  Subtask read(BinaryReader reader) {
+  SubtaskModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Subtask(
+    return SubtaskModel(
       id: fields[0] as String,
       title: fields[1] as String,
       isCompleted: fields[2] == null ? false : fields[2] as bool,
@@ -24,7 +24,7 @@ class SubtaskAdapter extends TypeAdapter<Subtask> {
   }
 
   @override
-  void write(BinaryWriter writer, Subtask obj) {
+  void write(BinaryWriter writer, SubtaskModel obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -41,7 +41,7 @@ class SubtaskAdapter extends TypeAdapter<Subtask> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SubtaskAdapter &&
+      other is SubtaskModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
