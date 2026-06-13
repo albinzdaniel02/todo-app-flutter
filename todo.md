@@ -47,7 +47,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 ## Phase 1: Local Database & Schema (`P1`)
 
-- [ ] **P1-1**: Implement `Subtask` database model with Hive annotations and run code generator.
+- [x] **P1-1**: Implement `Subtask` database model with Hive annotations and run code generator.
 - [ ] **P1-2**: Implement `Category` database model with Hive annotations and run code generator.
 - [ ] **P1-3**: Implement main `Task` database model containing subtasks list, category relationships, and priority enum mapping. Run generator.
 - [ ] **P1-4**: Implement database bootstrapper in `main.dart` (initialize Hive, register type adapters, and open boxes).
