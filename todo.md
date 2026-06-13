@@ -62,11 +62,11 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 - [x] **P2-1**: Design abstract repository interfaces `TodoRepository` and `CategoryRepository`.
 - [x] **P2-2**: Implement `HiveCategoryRepository` to support reading streams of custom categories and saving/deleting them.
-- [ ] **P2-3**: Implement `HiveTodoRepository` to manage database operations (reading active tasks, archives, trashed/soft-deleted items).
+- [x] **P2-3**: Implement `HiveTodoRepository` to manage database operations (reading active tasks, archives, trashed/soft-deleted items).
 
 ### P2 Exit Checks
-- [ ] Repository boundaries cleanly separate database entities from domains.
-- [ ] All database actions are reactive and emit updates via Streams.
+- [x] Repository boundaries cleanly separate database entities from domains.
+- [x] All database actions are reactive and emit updates via Streams.
 
 ---
 
