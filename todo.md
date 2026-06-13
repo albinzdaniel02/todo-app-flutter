@@ -73,11 +73,11 @@ This checklist tracks progress throughout the implementation phase. Each task co
 ## Phase 3: State Management (`P3`)
 
 - [x] **P3-1**: Implement Riverpod `CategoryListController` to expose and manipulate categories.
-- [ ] **P3-2**: Implement Riverpod `TodoListController` to manage task creation, completion toggles, subtask updates, filters, search queries, archiving, and soft-deletes.
+- [x] **P3-2**: Implement Riverpod `TodoListController` to manage task creation, completion toggles, subtask updates, filters, search queries, archiving, and soft-deletes.
 
 ### P3 Exit Checks
-- [ ] Controllers are stateful, predictable, and handle modifications cleanly without UI dependencies.
-- [ ] Code generation runs successfully with Riverpod annotations.
+- [x] Controllers are stateful, predictable, and handle modifications cleanly without UI dependencies.
+- [x] Code generation runs successfully with Riverpod annotations.
 
 ---
 
