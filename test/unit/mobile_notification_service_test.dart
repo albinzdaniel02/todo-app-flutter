@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -22,6 +23,15 @@ class MockFlutterLocalNotificationsPlugin extends Fake
   AndroidScheduleMode? scheduledAndroidScheduleMode;
   String? scheduledPayload;
 
+  bool shouldThrowOnExact = false;
+  int exactCallsCount = 0;
+  int inexactCallsCount = 0;
+
+  @override
+  T? resolvePlatformSpecificImplementation<
+    T extends FlutterLocalNotificationsPlatform
+  >() => null;
+
   @override
   Future<bool?> initialize({
     required InitializationSettings settings,
@@ -44,6 +54,19 @@ class MockFlutterLocalNotificationsPlugin extends Fake
     String? payload,
     DateTimeComponents? matchDateTimeComponents,
   }) async {
+    if (androidScheduleMode == AndroidScheduleMode.exactAllowWhileIdle) {
+      exactCallsCount++;
+      if (shouldThrowOnExact) {
+        throw PlatformException(
+          code: 'exact_alarm_denied',
+          message: 'Exact alarm permission denied',
+        );
+      }
+    } else if (androidScheduleMode ==
+        AndroidScheduleMode.inexactAllowWhileIdle) {
+      inexactCallsCount++;
+    }
+
     zonedScheduleCalled = true;
     scheduledId = id;
     scheduledTitle = title;
@@ -80,9 +103,7 @@ void main() {
       final result = await service.initialize();
 
       expect(mockPlugin.initializeCalled, isTrue);
-      // Wait, since we are not running on a real Android/iOS device (and kIsWeb is false in desktop tests),
-      // mockPlugin.resolvePlatformSpecificImplementation will return null in the test environment,
-      // so requestPermissions will return false. Thus result is false.
+      // Mocked implementation has null resolvePlatformSpecificImplementation, so returns false
       expect(result, isFalse);
       expect(mockPlugin.settings, isNotNull);
       expect(mockPlugin.settings!.android, isNotNull);
@@ -116,7 +137,6 @@ void main() {
           AndroidScheduleMode.exactAllowWhileIdle,
         );
         expect(mockPlugin.scheduledDate, isNotNull);
-        // Verify timezone of scheduledDate is UTC
         expect(mockPlugin.scheduledDate!.location, tz.UTC);
       },
     );
@@ -160,5 +180,61 @@ void main() {
 
       expect(mockPlugin.cancelAllCalled, isTrue);
     });
+
+    test(
+      'should generate same deterministic integer ID for same String ID',
+      () async {
+        await service.initialize();
+
+        final id = 'task-uuid-string-abc-123';
+        final scheduledTime = DateTime.now().add(const Duration(hours: 1));
+
+        await service.scheduleNotification(
+          id: id,
+          title: 'Title',
+          body: 'Body',
+          scheduledTime: scheduledTime,
+        );
+        final firstIntId = mockPlugin.scheduledId;
+
+        await service.scheduleNotification(
+          id: id,
+          title: 'Title 2',
+          body: 'Body 2',
+          scheduledTime: scheduledTime,
+        );
+        final secondIntId = mockPlugin.scheduledId;
+
+        expect(firstIntId, equals(secondIntId));
+        expect(firstIntId, isNotNull);
+      },
+    );
+
+    test(
+      'should fall back to inexact scheduling when exact scheduling throws',
+      () async {
+        await service.initialize();
+        mockPlugin.shouldThrowOnExact = true;
+
+        final id = 'test-notification-fallback';
+        final scheduledTime = DateTime.now().add(const Duration(hours: 1));
+
+        await service.scheduleNotification(
+          id: id,
+          title: 'Fallback title',
+          body: 'Fallback body',
+          scheduledTime: scheduledTime,
+        );
+
+        // Verify zonedSchedule was called, exact mode threw and inexact fallback was triggered
+        expect(mockPlugin.zonedScheduleCalled, isTrue);
+        expect(mockPlugin.exactCallsCount, 1);
+        expect(mockPlugin.inexactCallsCount, 1);
+        expect(
+          mockPlugin.scheduledAndroidScheduleMode,
+          AndroidScheduleMode.inexactAllowWhileIdle,
+        );
+      },
+    );
   });
 }
