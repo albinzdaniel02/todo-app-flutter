@@ -7,26 +7,44 @@ import 'package:todo_app/features/todo/domain/entities/task.dart';
 
 part 'notification_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class NotificationController extends _$NotificationController {
   final Map<String, DateTime> _scheduledTasks = {};
+  bool _isInitialized = false;
+  bool _isStartupSyncDone = false;
 
   @override
-  Stream<void> build() {
-    ref.keepAlive();
+  Stream<void> build() async* {
     final repository = ref.watch(todoRepositoryProvider);
     final service = ref.watch(notificationServiceProvider);
 
-    // Initialize notification service dynamically on controller startup
-    service.initialize();
+    // Ensure initialization happens exactly once before scheduling
+    if (!_isInitialized) {
+      await service.initialize();
+      _isInitialized = true;
+    }
 
-    // Watch active tasks stream
-    return repository.watchActiveTasks().map((tasks) {
-      _syncNotifications(tasks, service);
+    // Use asyncMap to await asynchronous synchronization and propagate errors correctly
+    yield* repository.watchActiveTasks().asyncMap((tasks) async {
+      await _syncNotifications(tasks, service);
     });
   }
 
-  void _syncNotifications(List<Task> tasks, NotificationService service) {
+  Future<void> _syncNotifications(
+    List<Task> tasks,
+    NotificationService service,
+  ) async {
+    // On first startup/rebuild sync, cancel all OS notifications to clear orphaned tasks
+    if (!_isStartupSyncDone) {
+      try {
+        await service.cancelAllNotifications();
+        _scheduledTasks.clear();
+        _isStartupSyncDone = true;
+      } catch (_) {
+        // Log startup sync failure
+      }
+    }
+
     final activeTaskIds = <String>{};
     final now = DateTime.now();
 
@@ -46,14 +64,18 @@ class NotificationController extends _$NotificationController {
         // If not scheduled, or scheduled date changed, schedule/reschedule
         if (scheduledDate == null || scheduledDate != task.dueDate) {
           _scheduledTasks[task.id] = task.dueDate!;
-          service.scheduleNotification(
-            id: task.id,
-            title: task.title,
-            body: task.description.isNotEmpty
-                ? task.description
-                : 'Task due reminder',
-            scheduledTime: task.dueDate!,
-          );
+          try {
+            await service.scheduleNotification(
+              id: task.id,
+              title: task.title,
+              body: task.description.isNotEmpty
+                  ? task.description
+                  : 'Task due reminder',
+              scheduledTime: task.dueDate!,
+            );
+          } catch (_) {
+            // Log/handle scheduling error for this specific task
+          }
         }
       }
     }
@@ -62,8 +84,12 @@ class NotificationController extends _$NotificationController {
     final keysToRemove = <String>[];
     for (final taskId in _scheduledTasks.keys) {
       if (!activeTaskIds.contains(taskId)) {
-        service.cancelNotification(taskId);
-        keysToRemove.add(taskId);
+        try {
+          await service.cancelNotification(taskId);
+          keysToRemove.add(taskId);
+        } catch (_) {
+          // Log/handle cancellation error
+        }
       }
     }
     for (final key in keysToRemove) {

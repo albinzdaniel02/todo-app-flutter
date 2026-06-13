@@ -7,12 +7,12 @@ part of 'notification_controller.dart';
 // **************************************************************************
 
 String _$notificationControllerHash() =>
-    r'965516c36ce4b530063bc9c2a440b7f2e82b8fad';
+    r'e88d287ea360a23e0ab5277c351a9ae72cc00cc7';
 
 /// See also [NotificationController].
 @ProviderFor(NotificationController)
 final notificationControllerProvider =
-    AutoDisposeStreamNotifierProvider<NotificationController, void>.internal(
+    StreamNotifierProvider<NotificationController, void>.internal(
       NotificationController.new,
       name: r'notificationControllerProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final notificationControllerProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$NotificationController = AutoDisposeStreamNotifier<void>;
+typedef _$NotificationController = StreamNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
