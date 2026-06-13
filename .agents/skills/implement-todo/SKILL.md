@@ -59,15 +59,16 @@ Create a Pull Request using the GitHub CLI (`gh`):
 gh pr create --title "<task-name>: short description" --body "Closes <task-name>"
 ```
 
-### 8. Code Review Subagent
-Launch a code review subagent to inspect the PR's diff and identify potential issues.
-1. Use `define_subagent` to define a code reviewer if not already defined:
+### 8. Code Review Subagent (Unbiased & Context Aware)
+To prevent any bias when analyzing implemented work, the PR must always be reviewed by a newly created and invoked subagent (`pr-reviewer`), rather than reusing any existing executor context.
+1. Use `define_subagent` to define a fresh code reviewer for the PR:
    - **Name**: `pr-reviewer`
    - **Description**: "Reviews PR diffs for quality, architectural alignment, style guide conformity, and correctness."
-   - **System Prompt**: A prompt instructing the subagent to carefully review the git diff and provide criticisms.
-2. Use `invoke_subagent` to run the review:
-   - **Prompt**: Pass the output of `gh pr diff` and ask the reviewer to analyze it.
+   - **System Prompt**: A prompt instructing the subagent to carefully review the git diff and provide constructive criticisms or approve with "LGTM".
+2. Use `invoke_subagent` to run the review.
+   - **Prompt**: Pass the output of `gh pr diff` and explicitly include context that the existing test suite is already passing (all current tests pass). Instruct the reviewer to focus on reviewing new changes and additions without re-running redundant global checks.
 3. Address any comments or feedback provided by the reviewer by modifying the code on the same branch, committing, and pushing.
+4. When launching any other subagents, always share current verification context (e.g. "all existing tests are passing") so they avoid redundant verification or compile checks.
 
 ### 9. CI/CD Checks
 Monitor the CI checks on the PR using the GitHub CLI or checking status:
