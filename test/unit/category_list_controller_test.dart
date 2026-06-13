@@ -18,20 +18,22 @@ class FakeCategoryRepository implements CategoryRepository {
   }
 
   @override
-  Future<List<Category>> getCategories() async => List.unmodifiable(_categories);
+  Future<List<Category>> getCategories() async =>
+      List.unmodifiable(_categories);
 
   @override
   Future<Category?> getCategory(String id) async {
-    try {
-      return _categories.firstWhere((element) => element.id == id);
-    } catch (_) {
-      return null;
+    for (final category in _categories) {
+      if (category.id == id) return category;
     }
+    return null;
   }
 
   @override
   Future<void> saveCategory(Category category) async {
-    final index = _categories.indexWhere((element) => element.id == category.id);
+    final index = _categories.indexWhere(
+      (element) => element.id == category.id,
+    );
     if (index >= 0) {
       _categories[index] = category;
     } else {
@@ -89,13 +91,22 @@ void main() {
 
       // Wait for stream event to propagate
       await Future.delayed(Duration.zero);
-      expect(states, [isEmpty, equals([category])]);
+      expect(states, [
+        isEmpty,
+        equals([category]),
+      ]);
 
       subscription.close();
     });
 
     test('addCategory should save category through repository', () async {
-      final controller = container.read(categoryListControllerProvider.notifier);
+      final subscription = container.listen(
+        categoryListControllerProvider,
+        (previous, next) {},
+      );
+      final controller = container.read(
+        categoryListControllerProvider.notifier,
+      );
 
       await controller.addCategory(
         name: 'Study',
@@ -109,29 +120,47 @@ void main() {
       expect(categories.first.colorHex, equals('#00FF00'));
       expect(categories.first.iconCodePoint, equals(123));
       expect(categories.first.id, isNotEmpty);
+
+      subscription.close();
     });
 
     test('updateCategory should modify existing category', () async {
       const category = Category(id: '1', name: 'Work', colorHex: '#FF0000');
       await fakeRepository.saveCategory(category);
 
-      final controller = container.read(categoryListControllerProvider.notifier);
+      final subscription = container.listen(
+        categoryListControllerProvider,
+        (previous, next) {},
+      );
+      final controller = container.read(
+        categoryListControllerProvider.notifier,
+      );
       final updatedCategory = category.copyWith(name: 'Work Updated');
       await controller.updateCategory(updatedCategory);
 
       final categories = await fakeRepository.getCategories();
       expect(categories.first.name, equals('Work Updated'));
+
+      subscription.close();
     });
 
     test('deleteCategory should delete category', () async {
       const category = Category(id: '1', name: 'Work', colorHex: '#FF0000');
       await fakeRepository.saveCategory(category);
 
-      final controller = container.read(categoryListControllerProvider.notifier);
+      final subscription = container.listen(
+        categoryListControllerProvider,
+        (previous, next) {},
+      );
+      final controller = container.read(
+        categoryListControllerProvider.notifier,
+      );
       await controller.deleteCategory('1');
 
       final categories = await fakeRepository.getCategories();
       expect(categories, isEmpty);
+
+      subscription.close();
     });
   });
 }
