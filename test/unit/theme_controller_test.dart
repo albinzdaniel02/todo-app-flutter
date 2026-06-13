@@ -32,28 +32,40 @@ void main() {
       expect(themeMode, equals(ThemeMode.system));
     });
 
-    test('setThemeMode should update theme mode state and save to Hive', () async {
-      final controller = container.read(themeControllerProvider.notifier);
+    test(
+      'setThemeMode should update theme mode state and save to Hive',
+      () async {
+        final controller = container.read(themeControllerProvider.notifier);
 
-      await controller.setThemeMode(ThemeMode.dark);
-      expect(container.read(themeControllerProvider), equals(ThemeMode.dark));
-      expect(settingsBox.get('theme_mode'), equals('dark'));
+        await controller.setThemeMode(ThemeMode.dark);
+        expect(container.read(themeControllerProvider), equals(ThemeMode.dark));
+        expect(settingsBox.get('theme_mode'), equals('dark'));
 
-      await controller.setThemeMode(ThemeMode.light);
-      expect(container.read(themeControllerProvider), equals(ThemeMode.light));
-      expect(settingsBox.get('theme_mode'), equals('light'));
-    });
+        await controller.setThemeMode(ThemeMode.light);
+        expect(
+          container.read(themeControllerProvider),
+          equals(ThemeMode.light),
+        );
+        expect(settingsBox.get('theme_mode'), equals('light'));
+      },
+    );
 
-    test('toggleTheme should switch theme mode state and save to Hive', () async {
-      final controller = container.read(themeControllerProvider.notifier);
+    test(
+      'toggleTheme should switch theme mode state and save to Hive',
+      () async {
+        final controller = container.read(themeControllerProvider.notifier);
 
-      await controller.toggleTheme(true);
-      expect(container.read(themeControllerProvider), equals(ThemeMode.dark));
-      expect(settingsBox.get('theme_mode'), equals('dark'));
+        await controller.toggleTheme(true);
+        expect(container.read(themeControllerProvider), equals(ThemeMode.dark));
+        expect(settingsBox.get('theme_mode'), equals('dark'));
 
-      await controller.toggleTheme(false);
-      expect(container.read(themeControllerProvider), equals(ThemeMode.light));
-      expect(settingsBox.get('theme_mode'), equals('light'));
-    });
+        await controller.toggleTheme(false);
+        expect(
+          container.read(themeControllerProvider),
+          equals(ThemeMode.light),
+        );
+        expect(settingsBox.get('theme_mode'), equals('light'));
+      },
+    );
   });
 }
