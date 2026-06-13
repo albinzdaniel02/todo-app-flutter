@@ -38,7 +38,7 @@ class Task extends Equatable {
   @HiveField(3, defaultValue: false)
   final bool isCompleted;
 
-  @HiveField(4)
+  @HiveField(4, defaultValue: TaskPriority.medium)
   final TaskPriority priority;
 
   @HiveField(5)
@@ -47,7 +47,7 @@ class Task extends Equatable {
   @HiveField(6)
   final String? categoryId;
 
-  @HiveField(7)
+  @HiveField(7, defaultValue: [])
   final List<Subtask> subtasks;
 
   @HiveField(8, defaultValue: false)
@@ -111,7 +111,7 @@ class Task extends Equatable {
       isCompleted: json['isCompleted'] as bool? ?? false,
       priority: TaskPriority.fromString(json['priority'] as String?),
       dueDate: json['dueDate'] != null
-          ? DateTime.parse(json['dueDate'] as String)
+          ? DateTime.tryParse(json['dueDate'] as String)
           : null,
       categoryId: json['categoryId'] as String?,
       subtasks:
@@ -122,7 +122,7 @@ class Task extends Equatable {
       isArchived: json['isArchived'] as bool? ?? false,
       isDeleted: json['isDeleted'] as bool? ?? false,
       createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'] as String)
+          ? DateTime.tryParse(json['createdAt'] as String) ?? DateTime.now()
           : DateTime.now(),
     );
   }

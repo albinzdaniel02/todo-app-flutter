@@ -21,10 +21,12 @@ class TaskAdapter extends TypeAdapter<Task> {
       title: fields[1] as String,
       description: fields[2] == null ? '' : fields[2] as String,
       isCompleted: fields[3] == null ? false : fields[3] as bool,
-      priority: fields[4] as TaskPriority,
+      priority: fields[4] == null
+          ? TaskPriority.medium
+          : fields[4] as TaskPriority,
       dueDate: fields[5] as DateTime?,
       categoryId: fields[6] as String?,
-      subtasks: (fields[7] as List).cast<Subtask>(),
+      subtasks: fields[7] == null ? [] : (fields[7] as List).cast<Subtask>(),
       isArchived: fields[8] == null ? false : fields[8] as bool,
       isDeleted: fields[9] == null ? false : fields[9] as bool,
       createdAt: fields[10] as DateTime,
