@@ -69,11 +69,16 @@ void main() {
     });
 
     test('watchCategories should emit updated category lists', () async {
-      final emissions = <List<Category>>[];
+      final stream = repository.watchCategories();
 
-      final subscription = repository.watchCategories().listen((list) {
-        emissions.add(list);
-      });
+      final expectation = expectLater(
+        stream,
+        emitsInOrder([
+          isEmpty,
+          equals([tCategory]),
+          isEmpty,
+        ]),
+      );
 
       await Future.delayed(Duration.zero);
 
@@ -81,14 +86,8 @@ void main() {
       await Future.delayed(Duration.zero);
 
       await repository.deleteCategory(tCategory.id);
-      await Future.delayed(Duration.zero);
 
-      await subscription.cancel();
-
-      expect(emissions.length, equals(3));
-      expect(emissions[0], isEmpty);
-      expect(emissions[1], equals([tCategory]));
-      expect(emissions[2], isEmpty);
+      await expectation;
     });
   });
 }

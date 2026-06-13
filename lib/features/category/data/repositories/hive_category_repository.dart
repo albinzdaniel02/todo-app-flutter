@@ -9,26 +9,9 @@ class HiveCategoryRepository implements CategoryRepository {
   HiveCategoryRepository(this._box);
 
   @override
-  Stream<List<Category>> watchCategories() {
-    late StreamController<List<Category>> controller;
-    StreamSubscription? subscription;
-
-    controller = StreamController<List<Category>>(
-      onListen: () {
-        controller.add(_box.values.toList());
-        subscription = _box.watch().listen((_) {
-          if (!controller.isClosed) {
-            controller.add(_box.values.toList());
-          }
-        });
-      },
-      onCancel: () {
-        subscription?.cancel();
-        controller.close();
-      },
-    );
-
-    return controller.stream;
+  Stream<List<Category>> watchCategories() async* {
+    yield _box.values.toList();
+    yield* _box.watch().map((_) => _box.values.toList());
   }
 
   @override
