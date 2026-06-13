@@ -12,24 +12,50 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('HomeView navigation and tabs test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MyApp(),
-      ),
+    await tester.pumpWidget(const ProviderScope(child: MyApp()));
+
+    // Verify that the title of the first tab is displayed in the AppBar.
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('My Tasks')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Tags')),
+      findsNothing,
     );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify search input field exists.
+    expect(find.byType(TextField), findsOneWidget);
+    expect(find.widgetWithText(TextField, 'Search Tasks...'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Tap on the 'Tags' tab in the bottom navigation bar.
+    await tester.tap(find.byIcon(Icons.label_outline));
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the title changes to 'Tags'.
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Tags')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('My Tasks')),
+      findsNothing,
+    );
+
+    // Tap on the 'Settings' tab in the bottom navigation bar.
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
+
+    // Verify that the title changes to 'Settings'.
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Settings')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Tags')),
+      findsNothing,
+    );
   });
 }
