@@ -30,7 +30,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 ## Phase 0: Setup and CI/CD (`P0`)
 
-- [ ] **P0-1**: Initialize Flutter project in the root folder.
+- [x] **P0-1**: Initialize Flutter project in the root folder.
   - Commands: `flutter create --org com.todoapp --platforms android,ios,web .`
 - [ ] **P0-2**: Configure `pubspec.yaml` with required dependencies:
   - `flutter_riverpod`, `riverpod_annotation`, `hive`, `hive_flutter`, `uuid`, `equatable`, `intl`, `flutter_local_notifications`, `timezone`
