@@ -2,18 +2,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/features/todo/data/models/subtask.dart';
 
 void main() {
-  group('Subtask Model Tests', () {
+  group('SubtaskModel Tests', () {
     const tId = '1f33f11d-2831-419b-ab0d-b8d9e2db3db1';
     const tTitle = 'Buy milk';
     const tIsCompleted = true;
 
     test('should support value equality', () {
-      const subtask1 = Subtask(
+      const subtask1 = SubtaskModel(
         id: tId,
         title: tTitle,
         isCompleted: tIsCompleted,
       );
-      const subtask2 = Subtask(
+      const subtask2 = SubtaskModel(
         id: tId,
         title: tTitle,
         isCompleted: tIsCompleted,
@@ -22,7 +22,7 @@ void main() {
     });
 
     test('copyWith should return a new object with updated values', () {
-      const subtask = Subtask(id: tId, title: tTitle, isCompleted: false);
+      const subtask = SubtaskModel(id: tId, title: tTitle, isCompleted: false);
       final updated = subtask.copyWith(isCompleted: true);
 
       expect(updated.id, tId);
@@ -37,16 +37,16 @@ void main() {
         'isCompleted': tIsCompleted,
       };
 
-      final result = Subtask.fromJson(jsonMap);
+      final result = SubtaskModel.fromJson(jsonMap);
 
       expect(
         result,
-        const Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted),
+        const SubtaskModel(id: tId, title: tTitle, isCompleted: tIsCompleted),
       );
     });
 
     test('toJson should return a JSON map containing correct data', () {
-      const subtask = Subtask(
+      const subtask = SubtaskModel(
         id: tId,
         title: tTitle,
         isCompleted: tIsCompleted,
@@ -60,6 +60,18 @@ void main() {
       final result = subtask.toJson();
 
       expect(result, expectedMap);
+    });
+
+    test('toDomain should convert to Subtask domain entity correctly', () {
+      const model = SubtaskModel(
+        id: tId,
+        title: tTitle,
+        isCompleted: tIsCompleted,
+      );
+      final domain = model.toDomain();
+      expect(domain.id, tId);
+      expect(domain.title, tTitle);
+      expect(domain.isCompleted, tIsCompleted);
     });
   });
 }

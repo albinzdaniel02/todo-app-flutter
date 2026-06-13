@@ -11,14 +11,14 @@ void main() async {
   await Hive.initFlutter();
 
   // Register adapters
-  Hive.registerAdapter(SubtaskAdapter());
-  Hive.registerAdapter(CategoryAdapter());
-  Hive.registerAdapter(TaskPriorityAdapter());
-  Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(SubtaskModelAdapter());
+  Hive.registerAdapter(CategoryModelAdapter());
+  Hive.registerAdapter(TaskPriorityModelAdapter());
+  Hive.registerAdapter(TaskModelAdapter());
 
   // Open Hive boxes
-  await Hive.openBox<Task>('tasks');
-  await Hive.openBox<Category>('categories');
+  await Hive.openBox<TaskModel>('tasks');
+  await Hive.openBox<CategoryModel>('categories');
 
   runApp(const MyApp());
 }

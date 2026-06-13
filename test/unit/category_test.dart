@@ -2,20 +2,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/features/todo/data/models/category.dart';
 
 void main() {
-  group('Category Model Tests', () {
+  group('CategoryModel Tests', () {
     const tId = '1f33f11d-2831-419b-ab0d-b8d9e2db3db1';
     const tName = 'Work';
     const tColorHex = '#FF42A5F5';
     const tIconCodePoint = 50123;
 
     test('should support value equality', () {
-      const category1 = Category(
+      const category1 = CategoryModel(
         id: tId,
         name: tName,
         colorHex: tColorHex,
         iconCodePoint: tIconCodePoint,
       );
-      const category2 = Category(
+      const category2 = CategoryModel(
         id: tId,
         name: tName,
         colorHex: tColorHex,
@@ -25,7 +25,7 @@ void main() {
     });
 
     test('copyWith should return a new object with updated values', () {
-      const category = Category(
+      const category = CategoryModel(
         id: tId,
         name: tName,
         colorHex: tColorHex,
@@ -47,11 +47,11 @@ void main() {
         'iconCodePoint': tIconCodePoint,
       };
 
-      final result = Category.fromJson(jsonMap);
+      final result = CategoryModel.fromJson(jsonMap);
 
       expect(
         result,
-        const Category(
+        const CategoryModel(
           id: tId,
           name: tName,
           colorHex: tColorHex,
@@ -61,7 +61,7 @@ void main() {
     });
 
     test('toJson should return a JSON map containing correct data', () {
-      const category = Category(
+      const category = CategoryModel(
         id: tId,
         name: tName,
         colorHex: tColorHex,
@@ -77,6 +77,20 @@ void main() {
       final result = category.toJson();
 
       expect(result, expectedMap);
+    });
+
+    test('toDomain should convert to Category domain entity correctly', () {
+      const model = CategoryModel(
+        id: tId,
+        name: tName,
+        colorHex: tColorHex,
+        iconCodePoint: tIconCodePoint,
+      );
+      final domain = model.toDomain();
+      expect(domain.id, tId);
+      expect(domain.name, tName);
+      expect(domain.colorHex, tColorHex);
+      expect(domain.iconCodePoint, tIconCodePoint);
     });
   });
 }

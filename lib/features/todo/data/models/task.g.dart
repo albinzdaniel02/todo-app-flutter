@@ -6,27 +6,28 @@ part of 'task.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TaskAdapter extends TypeAdapter<Task> {
+class TaskModelAdapter extends TypeAdapter<TaskModel> {
   @override
   final int typeId = 0;
 
   @override
-  Task read(BinaryReader reader) {
+  TaskModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Task(
+    return TaskModel(
       id: fields[0] as String,
       title: fields[1] as String,
       description: fields[2] == null ? '' : fields[2] as String,
       isCompleted: fields[3] == null ? false : fields[3] as bool,
       priority: fields[4] == null
-          ? TaskPriority.medium
-          : fields[4] as TaskPriority,
+          ? TaskPriorityModel.medium
+          : fields[4] as TaskPriorityModel,
       dueDate: fields[5] as DateTime?,
       categoryId: fields[6] as String?,
-      subtasks: fields[7] == null ? [] : (fields[7] as List).cast<Subtask>(),
+      subtasks:
+          fields[7] == null ? [] : (fields[7] as List).cast<SubtaskModel>(),
       isArchived: fields[8] == null ? false : fields[8] as bool,
       isDeleted: fields[9] == null ? false : fields[9] as bool,
       createdAt: fields[10] as DateTime,
@@ -34,7 +35,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   }
 
   @override
-  void write(BinaryWriter writer, Task obj) {
+  void write(BinaryWriter writer, TaskModel obj) {
     writer
       ..writeByte(11)
       ..writeByte(0)
@@ -67,39 +68,39 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaskAdapter &&
+      other is TaskModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class TaskPriorityAdapter extends TypeAdapter<TaskPriority> {
+class TaskPriorityModelAdapter extends TypeAdapter<TaskPriorityModel> {
   @override
   final int typeId = 3;
 
   @override
-  TaskPriority read(BinaryReader reader) {
+  TaskPriorityModel read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return TaskPriority.low;
+        return TaskPriorityModel.low;
       case 1:
-        return TaskPriority.medium;
+        return TaskPriorityModel.medium;
       case 2:
-        return TaskPriority.high;
+        return TaskPriorityModel.high;
       default:
-        return TaskPriority.low;
+        return TaskPriorityModel.low;
     }
   }
 
   @override
-  void write(BinaryWriter writer, TaskPriority obj) {
+  void write(BinaryWriter writer, TaskPriorityModel obj) {
     switch (obj) {
-      case TaskPriority.low:
+      case TaskPriorityModel.low:
         writer.writeByte(0);
         break;
-      case TaskPriority.medium:
+      case TaskPriorityModel.medium:
         writer.writeByte(1);
         break;
-      case TaskPriority.high:
+      case TaskPriorityModel.high:
         writer.writeByte(2);
         break;
     }
@@ -111,7 +112,7 @@ class TaskPriorityAdapter extends TypeAdapter<TaskPriority> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaskPriorityAdapter &&
+      other is TaskPriorityModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

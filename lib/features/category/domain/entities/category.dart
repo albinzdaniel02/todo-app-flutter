@@ -1,37 +1,25 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
-import '../../../category/domain/entities/category.dart';
 
-part 'category.g.dart';
-
-@HiveType(typeId: 2)
-class CategoryModel extends Equatable {
-  @HiveField(0)
+class Category extends Equatable {
   final String id;
-
-  @HiveField(1)
   final String name;
-
-  @HiveField(2)
   final String colorHex;
-
-  @HiveField(3)
   final int? iconCodePoint;
 
-  const CategoryModel({
+  const Category({
     required this.id,
     required this.name,
     required this.colorHex,
     this.iconCodePoint,
   });
 
-  CategoryModel copyWith({
+  Category copyWith({
     String? id,
     String? name,
     String? colorHex,
     Object? iconCodePoint = const Object(),
   }) {
-    return CategoryModel(
+    return Category(
       id: id ?? this.id,
       name: name ?? this.name,
       colorHex: colorHex ?? this.colorHex,
@@ -41,8 +29,8 @@ class CategoryModel extends Equatable {
     );
   }
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
       id: json['id'] as String,
       name: json['name'] as String,
       colorHex: json['colorHex'] as String,
@@ -57,24 +45,6 @@ class CategoryModel extends Equatable {
       'colorHex': colorHex,
       'iconCodePoint': iconCodePoint,
     };
-  }
-
-  Category toDomain() {
-    return Category(
-      id: id,
-      name: name,
-      colorHex: colorHex,
-      iconCodePoint: iconCodePoint,
-    );
-  }
-
-  factory CategoryModel.fromDomain(Category domain) {
-    return CategoryModel(
-      id: domain.id,
-      name: domain.name,
-      colorHex: domain.colorHex,
-      iconCodePoint: domain.iconCodePoint,
-    );
   }
 
   @override
