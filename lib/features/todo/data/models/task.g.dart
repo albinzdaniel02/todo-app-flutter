@@ -26,8 +26,9 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
           : fields[4] as TaskPriorityModel,
       dueDate: fields[5] as DateTime?,
       categoryId: fields[6] as String?,
-      subtasks:
-          fields[7] == null ? [] : (fields[7] as List).cast<SubtaskModel>(),
+      subtasks: fields[7] == null
+          ? []
+          : (fields[7] as List).cast<SubtaskModel>(),
       isArchived: fields[8] == null ? false : fields[8] as bool,
       isDeleted: fields[9] == null ? false : fields[9] as bool,
       createdAt: fields[10] as DateTime,

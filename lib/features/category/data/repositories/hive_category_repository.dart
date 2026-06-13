@@ -12,7 +12,9 @@ class HiveCategoryRepository implements CategoryRepository {
   @override
   Stream<List<Category>> watchCategories() async* {
     yield _box.values.map((e) => e.toDomain()).toList();
-    yield* _box.watch().map((_) => _box.values.map((e) => e.toDomain()).toList());
+    yield* _box.watch().map(
+      (_) => _box.values.map((e) => e.toDomain()).toList(),
+    );
   }
 
   @override

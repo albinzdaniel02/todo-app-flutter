@@ -11,11 +11,7 @@ class Subtask extends Equatable {
     this.isCompleted = false,
   });
 
-  Subtask copyWith({
-    String? id,
-    String? title,
-    bool? isCompleted,
-  }) {
+  Subtask copyWith({String? id, String? title, bool? isCompleted}) {
     return Subtask(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -32,11 +28,7 @@ class Subtask extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'isCompleted': isCompleted,
-    };
+    return {'id': id, 'title': title, 'isCompleted': isCompleted};
   }
 
   @override

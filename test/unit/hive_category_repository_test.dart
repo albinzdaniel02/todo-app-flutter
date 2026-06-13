@@ -2,12 +2,13 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:todo_app/features/category/data/repositories/hive_category_repository.dart';
+import 'package:todo_app/features/category/domain/entities/category.dart';
 import 'package:todo_app/features/todo/data/models/category.dart';
 
 void main() {
   group('HiveCategoryRepository Tests', () {
     late Directory tempDir;
-    late Box<Category> categoriesBox;
+    late Box<CategoryModel> categoriesBox;
     late HiveCategoryRepository repository;
 
     setUp(() async {
@@ -17,10 +18,10 @@ void main() {
       Hive.init(tempDir.path);
 
       if (!Hive.isAdapterRegistered(2)) {
-        Hive.registerAdapter(CategoryAdapter());
+        Hive.registerAdapter(CategoryModelAdapter());
       }
 
-      categoriesBox = await Hive.openBox<Category>('categories');
+      categoriesBox = await Hive.openBox<CategoryModel>('categories');
       repository = HiveCategoryRepository(categoriesBox);
     });
 

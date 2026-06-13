@@ -42,11 +42,7 @@ class SubtaskModel extends Equatable {
   }
 
   Subtask toDomain() {
-    return Subtask(
-      id: id,
-      title: title,
-      isCompleted: isCompleted,
-    );
+    return Subtask(id: id, title: title, isCompleted: isCompleted);
   }
 
   factory SubtaskModel.fromDomain(Subtask domain) {

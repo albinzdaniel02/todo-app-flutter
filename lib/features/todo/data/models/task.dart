@@ -137,7 +137,8 @@ class TaskModel extends Equatable {
           ? DateTime.tryParse(json['dueDate'] as String)
           : null,
       categoryId: json['categoryId'] as String?,
-      subtasks: (json['subtasks'] as List<dynamic>?)
+      subtasks:
+          (json['subtasks'] as List<dynamic>?)
               ?.map((e) => SubtaskModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -199,16 +200,16 @@ class TaskModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        description,
-        isCompleted,
-        priority,
-        dueDate,
-        categoryId,
-        subtasks,
-        isArchived,
-        isDeleted,
-        createdAt,
-      ];
+    id,
+    title,
+    description,
+    isCompleted,
+    priority,
+    dueDate,
+    categoryId,
+    subtasks,
+    isArchived,
+    isDeleted,
+    createdAt,
+  ];
 }

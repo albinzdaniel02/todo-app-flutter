@@ -1,18 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/features/todo/data/models/task.dart';
 import 'package:todo_app/features/todo/data/models/subtask.dart';
+import 'package:todo_app/features/todo/domain/entities/task.dart' as domain;
 
 void main() {
-  group('Task Model Tests', () {
+  group('TaskModel Tests', () {
     const tId = 'e9b25fb3-96b6-4554-bc0f-c89b0d62dcf0';
     const tTitle = 'Buy groceries';
     const tDescription = 'Milk, eggs, and bread';
     const tIsCompleted = false;
-    const tPriority = TaskPriority.high;
+    const tPriority = TaskPriorityModel.high;
     final tDueDate = DateTime.parse('2026-06-15T10:00:00.000Z');
     const tCategoryId = 'work-category-uuid';
     const tSubtasks = [
-      Subtask(
+      SubtaskModel(
         id: '1f33f11d-2831-419b-ab0d-b8d9e2db3db1',
         title: 'Buy milk',
         isCompleted: true,
@@ -22,7 +23,7 @@ void main() {
     const tIsDeleted = false;
     final tCreatedAt = DateTime.parse('2026-06-12T12:00:00.000Z');
 
-    final tTask1 = Task(
+    final tTask1 = TaskModel(
       id: tId,
       title: tTitle,
       description: tDescription,
@@ -36,7 +37,7 @@ void main() {
       createdAt: tCreatedAt,
     );
 
-    final tTask2 = Task(
+    final tTask2 = TaskModel(
       id: tId,
       title: tTitle,
       description: tDescription,
@@ -57,7 +58,7 @@ void main() {
     test('copyWith should return a new object with updated values', () {
       final updated = tTask1.copyWith(
         isCompleted: true,
-        priority: TaskPriority.low,
+        priority: TaskPriorityModel.low,
         categoryId: null, // Test nullable categoryId override
         dueDate: null, // Test nullable dueDate override
       );
@@ -65,7 +66,7 @@ void main() {
       expect(updated.id, tId);
       expect(updated.title, tTitle);
       expect(updated.isCompleted, true);
-      expect(updated.priority, TaskPriority.low);
+      expect(updated.priority, TaskPriorityModel.low);
       expect(updated.categoryId, isNull);
       expect(updated.dueDate, isNull);
     });
@@ -91,7 +92,7 @@ void main() {
         'createdAt': '2026-06-12T12:00:00.000Z',
       };
 
-      final result = Task.fromJson(jsonMap);
+      final result = TaskModel.fromJson(jsonMap);
 
       expect(result, equals(tTask1));
     });
@@ -120,6 +121,24 @@ void main() {
       final result = tTask1.toJson();
 
       expect(result, expectedMap);
+    });
+
+    test('toDomain should convert to Task domain entity correctly', () {
+      final domainTask = tTask1.toDomain();
+      expect(domainTask.id, tId);
+      expect(domainTask.title, tTitle);
+      expect(domainTask.description, tDescription);
+      expect(domainTask.isCompleted, tIsCompleted);
+      expect(domainTask.priority, domain.TaskPriority.high);
+      expect(domainTask.dueDate, tDueDate);
+      expect(domainTask.categoryId, tCategoryId);
+      expect(
+        domainTask.subtasks.first.id,
+        '1f33f11d-2831-419b-ab0d-b8d9e2db3db1',
+      );
+      expect(domainTask.isArchived, tIsArchived);
+      expect(domainTask.isDeleted, tIsDeleted);
+      expect(domainTask.createdAt, tCreatedAt);
     });
   });
 }

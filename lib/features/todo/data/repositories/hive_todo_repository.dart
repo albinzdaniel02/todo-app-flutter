@@ -12,25 +12,51 @@ class HiveTodoRepository implements TodoRepository {
   @override
   Stream<List<Task>> watchTasks() async* {
     yield _box.values.map((e) => e.toDomain()).toList();
-    yield* _box.watch().map((_) => _box.values.map((e) => e.toDomain()).toList());
+    yield* _box.watch().map(
+      (_) => _box.values.map((e) => e.toDomain()).toList(),
+    );
   }
 
   @override
   Stream<List<Task>> watchActiveTasks() async* {
-    yield _box.values.where((e) => !e.isArchived && !e.isDeleted).map((e) => e.toDomain()).toList();
-    yield* _box.watch().map((_) => _box.values.where((e) => !e.isArchived && !e.isDeleted).map((e) => e.toDomain()).toList());
+    yield _box.values
+        .where((e) => !e.isArchived && !e.isDeleted)
+        .map((e) => e.toDomain())
+        .toList();
+    yield* _box.watch().map(
+      (_) => _box.values
+          .where((e) => !e.isArchived && !e.isDeleted)
+          .map((e) => e.toDomain())
+          .toList(),
+    );
   }
 
   @override
   Stream<List<Task>> watchArchivedTasks() async* {
-    yield _box.values.where((e) => e.isArchived && !e.isDeleted).map((e) => e.toDomain()).toList();
-    yield* _box.watch().map((_) => _box.values.where((e) => e.isArchived && !e.isDeleted).map((e) => e.toDomain()).toList());
+    yield _box.values
+        .where((e) => e.isArchived && !e.isDeleted)
+        .map((e) => e.toDomain())
+        .toList();
+    yield* _box.watch().map(
+      (_) => _box.values
+          .where((e) => e.isArchived && !e.isDeleted)
+          .map((e) => e.toDomain())
+          .toList(),
+    );
   }
 
   @override
   Stream<List<Task>> watchTrashedTasks() async* {
-    yield _box.values.where((e) => e.isDeleted).map((e) => e.toDomain()).toList();
-    yield* _box.watch().map((_) => _box.values.where((e) => e.isDeleted).map((e) => e.toDomain()).toList());
+    yield _box.values
+        .where((e) => e.isDeleted)
+        .map((e) => e.toDomain())
+        .toList();
+    yield* _box.watch().map(
+      (_) => _box.values
+          .where((e) => e.isDeleted)
+          .map((e) => e.toDomain())
+          .toList(),
+    );
   }
 
   @override
@@ -40,17 +66,26 @@ class HiveTodoRepository implements TodoRepository {
 
   @override
   Future<List<Task>> getActiveTasks() async {
-    return _box.values.where((e) => !e.isArchived && !e.isDeleted).map((e) => e.toDomain()).toList();
+    return _box.values
+        .where((e) => !e.isArchived && !e.isDeleted)
+        .map((e) => e.toDomain())
+        .toList();
   }
 
   @override
   Future<List<Task>> getArchivedTasks() async {
-    return _box.values.where((e) => e.isArchived && !e.isDeleted).map((e) => e.toDomain()).toList();
+    return _box.values
+        .where((e) => e.isArchived && !e.isDeleted)
+        .map((e) => e.toDomain())
+        .toList();
   }
 
   @override
   Future<List<Task>> getTrashedTasks() async {
-    return _box.values.where((e) => e.isDeleted).map((e) => e.toDomain()).toList();
+    return _box.values
+        .where((e) => e.isDeleted)
+        .map((e) => e.toDomain())
+        .toList();
   }
 
   @override
