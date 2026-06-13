@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'features/todo/data/models/subtask.dart';
+import 'features/todo/data/models/category.dart';
+import 'features/todo/data/models/task.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive for Flutter
+  await Hive.initFlutter();
+
+  // Register adapters
+  Hive.registerAdapter(SubtaskAdapter());
+  Hive.registerAdapter(CategoryAdapter());
+  Hive.registerAdapter(TaskPriorityAdapter());
+  Hive.registerAdapter(TaskAdapter());
+
+  // Open Hive boxes
+  await Hive.openBox<Task>('tasks');
+  await Hive.openBox<Category>('categories');
+
   runApp(const MyApp());
 }
 
