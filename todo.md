@@ -86,11 +86,11 @@ This checklist tracks progress throughout the implementation phase. Each task co
 - [x] **P4-1**: Define abstract `NotificationService` interface.
 - [x] **P4-2**: Implement `MobileNotificationService` using `flutter_local_notifications` (handling alarms, icon channels, permissions).
 - [x] **P4-3**: Implement `WebNotificationService` fallback (HTML5 Notifications API and graceful permission handling).
-- [ ] **P4-4**: Build a unified notification controller that schedules or cancels notifications based on task due date changes.
+- [x] **P4-4**: Build a unified notification controller that schedules or cancels notifications based on task due date changes.
 
 ### P4 Exit Checks
-- [ ] Notifications scheduling compiles and executes smoothly on mobile view.
-- [ ] Web application runs without crashing when accessing the notification service.
+- [x] Notifications scheduling compiles and executes smoothly on mobile view.
+- [x] Web application runs without crashing when accessing the notification service.
 
 ---
 
