@@ -60,7 +60,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 ## Phase 2: Repository Layer (`P2`)
 
-- [ ] **P2-1**: Design abstract repository interfaces `TodoRepository` and `CategoryRepository`.
+- [x] **P2-1**: Design abstract repository interfaces `TodoRepository` and `CategoryRepository`.
 - [ ] **P2-2**: Implement `HiveCategoryRepository` to support reading streams of custom categories and saving/deleting them.
 - [ ] **P2-3**: Implement `HiveTodoRepository` to manage database operations (reading active tasks, archives, trashed/soft-deleted items).
 
