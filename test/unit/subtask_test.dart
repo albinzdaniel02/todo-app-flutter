@@ -8,8 +8,16 @@ void main() {
     const tIsCompleted = true;
 
     test('should support value equality', () {
-      const subtask1 = Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted);
-      const subtask2 = Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted);
+      const subtask1 = Subtask(
+        id: tId,
+        title: tTitle,
+        isCompleted: tIsCompleted,
+      );
+      const subtask2 = Subtask(
+        id: tId,
+        title: tTitle,
+        isCompleted: tIsCompleted,
+      );
       expect(subtask1, equals(subtask2));
     });
 
@@ -31,11 +39,18 @@ void main() {
 
       final result = Subtask.fromJson(jsonMap);
 
-      expect(result, const Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted));
+      expect(
+        result,
+        const Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted),
+      );
     });
 
     test('toJson should return a JSON map containing correct data', () {
-      const subtask = Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted);
+      const subtask = Subtask(
+        id: tId,
+        title: tTitle,
+        isCompleted: tIsCompleted,
+      );
       final expectedMap = {
         'id': tId,
         'title': tTitle,

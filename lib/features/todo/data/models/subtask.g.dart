@@ -19,7 +19,7 @@ class SubtaskAdapter extends TypeAdapter<Subtask> {
     return Subtask(
       id: fields[0] as String,
       title: fields[1] as String,
-      isCompleted: fields[2] as bool,
+      isCompleted: fields[2] == null ? false : fields[2] as bool,
     );
   }
 

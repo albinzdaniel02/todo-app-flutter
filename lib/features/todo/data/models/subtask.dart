@@ -11,7 +11,7 @@ class Subtask extends Equatable {
   @HiveField(1)
   final String title;
 
-  @HiveField(2)
+  @HiveField(2, defaultValue: false)
   final bool isCompleted;
 
   const Subtask({
