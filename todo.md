@@ -32,7 +32,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 - [x] **P0-1**: Initialize Flutter project in the root folder.
   - Commands: `flutter create --org com.todoapp --platforms android,ios,web .`
-- [ ] **P0-2**: Configure `pubspec.yaml` with required dependencies:
+- [x] **P0-2**: Configure `pubspec.yaml` with required dependencies:
   - `flutter_riverpod`, `riverpod_annotation`, `hive`, `hive_flutter`, `uuid`, `equatable`, `intl`, `flutter_local_notifications`, `timezone`
   - Dev dependencies: `build_runner`, `riverpod_generator`, `hive_generator`
 - [ ] **P0-3**: Create GitHub Actions CI workflow (`.github/workflows/ci.yml`):
@@ -40,7 +40,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 ### P0 Exit Checks
 - [ ] Flutter project files successfully initialized in root.
-- [ ] All dependencies resolved correctly with `flutter pub get`.
+- [x] All dependencies resolved correctly with `flutter pub get`.
 - [ ] CI workflow file exists and triggers on pull requests.
 
 ---
