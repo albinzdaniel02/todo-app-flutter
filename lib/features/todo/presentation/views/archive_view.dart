@@ -16,10 +16,7 @@ class ArchiveView extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Archive'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Archive'), elevation: 0),
       body: archivedTasksAsync.when(
         data: (tasks) {
           if (tasks.isEmpty) {
@@ -118,7 +115,9 @@ class ArchiveView extends ConsumerWidget {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('"${task.title}" unarchived'),
+                                        content: Text(
+                                          '"${task.title}" unarchived',
+                                        ),
                                       ),
                                     );
                                   }
@@ -135,7 +134,9 @@ class ArchiveView extends ConsumerWidget {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('"${task.title}" moved to trash'),
+                                        content: Text(
+                                          '"${task.title}" moved to trash',
+                                        ),
                                       ),
                                     );
                                   }
@@ -176,7 +177,8 @@ class ArchiveView extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text('Error loading archived tasks: $err')),
+        error: (err, _) =>
+            Center(child: Text('Error loading archived tasks: $err')),
       ),
     );
   }

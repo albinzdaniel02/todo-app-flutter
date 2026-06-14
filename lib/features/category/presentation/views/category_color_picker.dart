@@ -49,7 +49,12 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
     _g = (_currentColor.g * 255.0).round().clamp(0, 255);
     _b = (_currentColor.b * 255.0).round().clamp(0, 255);
 
-    final hexStr = _currentColor.toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase();
+    final hexStr = _currentColor
+        .toARGB32()
+        .toRadixString(16)
+        .padLeft(8, '0')
+        .substring(2)
+        .toUpperCase();
     _hexController = TextEditingController(text: '#$hexStr');
   }
 
@@ -59,7 +64,11 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
     super.dispose();
   }
 
-  void _updateColor(Color color, {bool updateHexField = true, bool updateRGB = true}) {
+  void _updateColor(
+    Color color, {
+    bool updateHexField = true,
+    bool updateRGB = true,
+  }) {
     setState(() {
       _currentColor = color;
       if (updateRGB) {
@@ -68,7 +77,12 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
         _b = (color.b * 255.0).round().clamp(0, 255);
       }
       if (updateHexField) {
-        final hexStr = color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase();
+        final hexStr = color
+            .toARGB32()
+            .toRadixString(16)
+            .padLeft(8, '0')
+            .substring(2)
+            .toUpperCase();
         _hexController.text = '#$hexStr';
       }
     });
@@ -109,7 +123,10 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
               decoration: BoxDecoration(
                 color: _currentColor,
                 shape: BoxShape.circle,
-                border: Border.all(color: theme.colorScheme.outline.withAlpha(100), width: 2),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withAlpha(100),
+                  width: 2,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: _currentColor.withAlpha(80),
@@ -127,7 +144,10 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
                   labelText: 'Color Hex Code',
                   hintText: '#HEXCODE',
                   border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                 ),
                 onChanged: _onHexChanged,
               ),
@@ -138,7 +158,9 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
         // Presets Label
         Text(
           'Preset Colors',
-          style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 8),
         // Wrap for Presets
@@ -157,10 +179,7 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
                   color: preset,
                   shape: BoxShape.circle,
                   border: isSelected
-                      ? Border.all(
-                          color: theme.colorScheme.onSurface,
-                          width: 3,
-                        )
+                      ? Border.all(color: theme.colorScheme.onSurface, width: 3)
                       : Border.all(
                           color: theme.colorScheme.outline.withAlpha(40),
                           width: 1,

@@ -38,12 +38,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     if (value == 'archive') {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ArchiveView()),
+                        MaterialPageRoute(
+                          builder: (context) => const ArchiveView(),
+                        ),
                       );
                     } else if (value == 'trash') {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const TrashView()),
+                        MaterialPageRoute(
+                          builder: (context) => const TrashView(),
+                        ),
                       );
                     }
                   },
@@ -520,8 +524,8 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                       Text(
                         'Tag Color',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       CategoryColorPicker(
@@ -571,48 +575,38 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                 ),
               )
             else
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-                  final color = _parseHexColor(category.colorHex);
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: color,
-                      radius: 12,
-                    ),
-                    title: Text(category.name),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          key: Key('edit_category_${category.id}'),
-                          icon: const Icon(Icons.edit_outlined),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => EditCategoryDialog(
-                                category: category,
-                              ),
-                            );
-                          },
-                        ),
-                        IconButton(
-                          key: Key('delete_category_${category.id}'),
-                          icon: const Icon(Icons.delete_outline),
-                          onPressed: () {
-                            ref
-                                .read(categoryListControllerProvider.notifier)
-                                .deleteCategory(category.id);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              ...categories.map((category) {
+                final color = _parseHexColor(category.colorHex);
+                return ListTile(
+                  leading: CircleAvatar(backgroundColor: color, radius: 12),
+                  title: Text(category.name),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        key: Key('edit_category_${category.id}'),
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                EditCategoryDialog(category: category),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        key: Key('delete_category_${category.id}'),
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () {
+                          ref
+                              .read(categoryListControllerProvider.notifier)
+                              .deleteCategory(category.id);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }),
           ],
         );
       },
@@ -676,7 +670,9 @@ class SettingsTab extends ConsumerWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ArchiveView()),
+                    MaterialPageRoute(
+                      builder: (context) => const ArchiveView(),
+                    ),
                   );
                 },
               ),

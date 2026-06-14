@@ -136,7 +136,9 @@ class TrashView extends ConsumerWidget {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('"${task.title}" restored'),
+                                        content: Text(
+                                          '"${task.title}" restored',
+                                        ),
                                       ),
                                     );
                                   }
@@ -150,7 +152,11 @@ class TrashView extends ConsumerWidget {
                                 ),
                                 tooltip: 'Delete permanently',
                                 onPressed: () =>
-                                    _showDeletePermanentlyConfirmation(context, ref, task),
+                                    _showDeletePermanentlyConfirmation(
+                                      context,
+                                      ref,
+                                      task,
+                                    ),
                               ),
                             ],
                           ),
@@ -187,7 +193,8 @@ class TrashView extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text('Error loading trashed tasks: $err')),
+        error: (err, _) =>
+            Center(child: Text('Error loading trashed tasks: $err')),
       ),
     );
   }
@@ -215,9 +222,9 @@ class TrashView extends ConsumerWidget {
               await ref.read(todoListControllerProvider.notifier).emptyTrash();
               if (context.mounted) {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Trash emptied')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Trash emptied')));
               }
             },
             child: const Text('Empty Trash'),
@@ -227,7 +234,11 @@ class TrashView extends ConsumerWidget {
     );
   }
 
-  void _showDeletePermanentlyConfirmation(BuildContext context, WidgetRef ref, Task task) {
+  void _showDeletePermanentlyConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+    Task task,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -253,7 +264,9 @@ class TrashView extends ConsumerWidget {
               if (context.mounted) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('"${task.title}" permanently deleted')),
+                  SnackBar(
+                    content: Text('"${task.title}" permanently deleted'),
+                  ),
                 );
               }
             },

@@ -21,7 +21,9 @@ void main() {
     fakeCategoryRepository.dispose();
   });
 
-  testWidgets('Category management: Add, edit, and delete categories', (WidgetTester tester) async {
+  testWidgets('Category management: Add, edit, and delete categories', (
+    WidgetTester tester,
+  ) async {
     tester.view.physicalSize = const Size(800, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -104,7 +106,9 @@ void main() {
     expect(categories, isEmpty);
   });
 
-  testWidgets('Archive View: Display, unarchive, and move to trash', (WidgetTester tester) async {
+  testWidgets('Archive View: Display, unarchive, and move to trash', (
+    WidgetTester tester,
+  ) async {
     tester.view.physicalSize = const Size(800, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -161,7 +165,9 @@ void main() {
     expect(repoTasks.first.isArchived, isFalse);
 
     // Re-archive the task for the move to trash test
-    await fakeTodoRepository.saveTask(repoTasks.first.copyWith(isArchived: true));
+    await fakeTodoRepository.saveTask(
+      repoTasks.first.copyWith(isArchived: true),
+    );
     await tester.pumpAndSettle();
 
     // Delete/move to trash from archive view
@@ -176,102 +182,111 @@ void main() {
     expect(repoTasks.first.isArchived, isTrue);
   });
 
-  testWidgets('Trash View: Display, restore, delete permanently, and empty trash', (WidgetTester tester) async {
-    tester.view.physicalSize = const Size(800, 1000);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(() {
-      tester.view.resetPhysicalSize();
-      tester.view.resetDevicePixelRatio();
-    });
+  testWidgets(
+    'Trash View: Display, restore, delete permanently, and empty trash',
+    (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
 
-    // Seed soft-deleted tasks
-    final task1 = Task(
-      id: 'task-trash-1',
-      title: 'Trashed Task 1',
-      priority: TaskPriority.high,
-      isDeleted: true,
-      createdAt: DateTime.now(),
-    );
-    final task2 = Task(
-      id: 'task-trash-2',
-      title: 'Trashed Task 2',
-      priority: TaskPriority.low,
-      isDeleted: true,
-      createdAt: DateTime.now(),
-    );
-    await fakeTodoRepository.saveTask(task1);
-    await fakeTodoRepository.saveTask(task2);
+      // Seed soft-deleted tasks
+      final task1 = Task(
+        id: 'task-trash-1',
+        title: 'Trashed Task 1',
+        priority: TaskPriority.high,
+        isDeleted: true,
+        createdAt: DateTime.now(),
+      );
+      final task2 = Task(
+        id: 'task-trash-2',
+        title: 'Trashed Task 2',
+        priority: TaskPriority.low,
+        isDeleted: true,
+        createdAt: DateTime.now(),
+      );
+      await fakeTodoRepository.saveTask(task1);
+      await fakeTodoRepository.saveTask(task2);
 
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          todoRepositoryProvider.overrideWithValue(fakeTodoRepository),
-          categoryRepositoryProvider.overrideWithValue(fakeCategoryRepository),
-        ],
-        child: const MyApp(),
-      ),
-    );
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            todoRepositoryProvider.overrideWithValue(fakeTodoRepository),
+            categoryRepositoryProvider.overrideWithValue(
+              fakeCategoryRepository,
+            ),
+          ],
+          child: const MyApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    // Go to Settings tab
-    await tester.tap(find.byIcon(Icons.settings_outlined));
-    await tester.pumpAndSettle();
+      // Go to Settings tab
+      await tester.tap(find.byIcon(Icons.settings_outlined));
+      await tester.pumpAndSettle();
 
-    // Tap "Trash" list tile
-    final trashTile = find.byKey(const Key('settingsTrashTile'));
-    expect(trashTile, findsOneWidget);
-    await tester.tap(trashTile);
-    await tester.pumpAndSettle();
+      // Tap "Trash" list tile
+      final trashTile = find.byKey(const Key('settingsTrashTile'));
+      expect(trashTile, findsOneWidget);
+      await tester.tap(trashTile);
+      await tester.pumpAndSettle();
 
-    // Verify we are on the Trash screen and both tasks are listed
-    expect(find.text('Trash'), findsOneWidget);
-    expect(find.text('Trashed Task 1'), findsOneWidget);
-    expect(find.text('Trashed Task 2'), findsOneWidget);
+      // Verify we are on the Trash screen and both tasks are listed
+      expect(find.text('Trash'), findsOneWidget);
+      expect(find.text('Trashed Task 1'), findsOneWidget);
+      expect(find.text('Trashed Task 2'), findsOneWidget);
 
-    // 1. Restore task 1
-    final restoreBtn = find.byKey(const Key('restore_task-trash-1'));
-    await tester.tap(restoreBtn);
-    await tester.pumpAndSettle();
+      // 1. Restore task 1
+      final restoreBtn = find.byKey(const Key('restore_task-trash-1'));
+      await tester.tap(restoreBtn);
+      await tester.pumpAndSettle();
 
-    // Verify Trashed Task 1 is no longer listed in Trash and is restored in repository
-    expect(find.text('Trashed Task 1'), findsNothing);
-    var t1 = await fakeTodoRepository.getTask('task-trash-1');
-    expect(t1!.isDeleted, isFalse);
+      // Verify Trashed Task 1 is no longer listed in Trash and is restored in repository
+      expect(find.text('Trashed Task 1'), findsNothing);
+      var t1 = await fakeTodoRepository.getTask('task-trash-1');
+      expect(t1!.isDeleted, isFalse);
 
-    // 2. Delete task 2 permanently
-    final deletePermBtn = find.byKey(const Key('delete_perm_task-trash-2'));
-    await tester.tap(deletePermBtn);
-    await tester.pumpAndSettle();
+      // 2. Delete task 2 permanently
+      final deletePermBtn = find.byKey(const Key('delete_perm_task-trash-2'));
+      await tester.tap(deletePermBtn);
+      await tester.pumpAndSettle();
 
-    // Verify confirmation dialog shows up
-    expect(find.text('Delete Permanently?'), findsOneWidget);
-    final confirmDeleteBtn = find.byKey(const Key('confirmDeletePerm_task-trash-2'));
-    await tester.tap(confirmDeleteBtn);
-    await tester.pumpAndSettle();
+      // Verify confirmation dialog shows up
+      expect(find.text('Delete Permanently?'), findsOneWidget);
+      final confirmDeleteBtn = find.byKey(
+        const Key('confirmDeletePerm_task-trash-2'),
+      );
+      await tester.tap(confirmDeleteBtn);
+      await tester.pumpAndSettle();
 
-    // Verify task 2 is permanently deleted from repo and UI
-    expect(find.text('Trashed Task 2'), findsNothing);
-    var t2 = await fakeTodoRepository.getTask('task-trash-2');
-    expect(t2, isNull);
+      // Verify task 2 is permanently deleted from repo and UI
+      expect(find.text('Trashed Task 2'), findsNothing);
+      var t2 = await fakeTodoRepository.getTask('task-trash-2');
+      expect(t2, isNull);
 
-    // Seed task 2 again for Empty Trash testing
-    await fakeTodoRepository.saveTask(task2);
-    await tester.pumpAndSettle();
+      // Seed task 2 again for Empty Trash testing
+      await fakeTodoRepository.saveTask(task2);
+      await tester.pumpAndSettle();
 
-    // 3. Empty Trash
-    final emptyTrashBtn = find.byKey(const Key('emptyTrashButton'));
-    await tester.tap(emptyTrashBtn);
-    await tester.pumpAndSettle();
+      // 3. Empty Trash
+      final emptyTrashBtn = find.byKey(const Key('emptyTrashButton'));
+      await tester.tap(emptyTrashBtn);
+      await tester.pumpAndSettle();
 
-    // Verify Empty Trash confirmation dialog shows up
-    expect(find.text('Empty Trash?'), findsOneWidget);
-    final confirmEmptyTrashBtn = find.byKey(const Key('confirmEmptyTrashButton'));
-    await tester.tap(confirmEmptyTrashBtn);
-    await tester.pumpAndSettle();
+      // Verify Empty Trash confirmation dialog shows up
+      expect(find.text('Empty Trash?'), findsOneWidget);
+      final confirmEmptyTrashBtn = find.byKey(
+        const Key('confirmEmptyTrashButton'),
+      );
+      await tester.tap(confirmEmptyTrashBtn);
+      await tester.pumpAndSettle();
 
-    // Verify trash is empty in UI and repo
-    expect(find.text('Trash is empty'), findsOneWidget);
-    var trashed = await fakeTodoRepository.getTrashedTasks();
-    expect(trashed, isEmpty);
-  });
+      // Verify trash is empty in UI and repo
+      expect(find.text('Trash is empty'), findsOneWidget);
+      var trashed = await fakeTodoRepository.getTrashedTasks();
+      expect(trashed, isEmpty);
+    },
+  );
 }

@@ -248,4 +248,3 @@ Stream<List<Task>> trashedTasksList(TrashedTasksListRef ref) {
   final repository = ref.watch(todoRepositoryProvider);
   return repository.watchTrashedTasks();
 }
-

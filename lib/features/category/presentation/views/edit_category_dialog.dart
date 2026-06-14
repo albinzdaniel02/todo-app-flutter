@@ -100,12 +100,15 @@ class _EditCategoryDialogState extends ConsumerState<EditCategoryDialog> {
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               final name = _nameController.text.trim();
-              final colorHex = '#${_selectedColor.toARGB32().toRadixString(16).substring(2)}';
+              final colorHex =
+                  '#${_selectedColor.toARGB32().toRadixString(16).substring(2)}';
               final updated = widget.category.copyWith(
                 name: name,
                 colorHex: colorHex,
               );
-              await ref.read(categoryListControllerProvider.notifier).updateCategory(updated);
+              await ref
+                  .read(categoryListControllerProvider.notifier)
+                  .updateCategory(updated);
               if (context.mounted) {
                 Navigator.pop(context, true);
               }
