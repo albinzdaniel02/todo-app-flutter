@@ -14,8 +14,8 @@ class WidescreenHomeView extends ConsumerWidget {
     final currentIndex = ref.watch(navigationControllerProvider);
     final titles = ['My Tasks', 'Tags', 'Settings'];
 
-    return Scaffold(
-      body: Row(
+    return Material(
+      child: Row(
         children: [
           NavigationRail(
             key: const Key('widescreenNavigationRail'),
