@@ -236,3 +236,15 @@ class TodoListController extends _$TodoListController {
     }
   }
 }
+
+@riverpod
+Stream<List<Task>> archivedTasksList(ArchivedTasksListRef ref) {
+  final repository = ref.watch(todoRepositoryProvider);
+  return repository.watchArchivedTasks();
+}
+
+@riverpod
+Stream<List<Task>> trashedTasksList(TrashedTasksListRef ref) {
+  final repository = ref.watch(todoRepositoryProvider);
+  return repository.watchTrashedTasks();
+}

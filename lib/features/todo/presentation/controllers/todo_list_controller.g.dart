@@ -6,6 +6,37 @@ part of 'todo_list_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$archivedTasksListHash() => r'15fa629cdcee2233148b5346ccc56ecb442de0eb';
+
+/// See also [archivedTasksList].
+@ProviderFor(archivedTasksList)
+final archivedTasksListProvider =
+    AutoDisposeStreamProvider<List<Task>>.internal(
+      archivedTasksList,
+      name: r'archivedTasksListProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$archivedTasksListHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef ArchivedTasksListRef = AutoDisposeStreamProviderRef<List<Task>>;
+String _$trashedTasksListHash() => r'0aa98626d4f135842e15eb565e7f937f807e7d12';
+
+/// See also [trashedTasksList].
+@ProviderFor(trashedTasksList)
+final trashedTasksListProvider = AutoDisposeStreamProvider<List<Task>>.internal(
+  trashedTasksList,
+  name: r'trashedTasksListProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$trashedTasksListHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef TrashedTasksListRef = AutoDisposeStreamProviderRef<List<Task>>;
 String _$todoSearchQueryHash() => r'9c868e0611bbf503a980466a9c1aacb823fa612f';
 
 /// See also [TodoSearchQuery].

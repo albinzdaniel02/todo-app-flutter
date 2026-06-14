@@ -4,9 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/core/theme/theme_controller.dart';
 import 'package:todo_app/features/category/domain/entities/category.dart';
 import 'package:todo_app/features/category/presentation/controllers/category_list_controller.dart';
+import 'package:todo_app/features/category/presentation/views/category_color_picker.dart';
+import 'package:todo_app/features/category/presentation/views/edit_category_dialog.dart';
 import 'package:todo_app/features/todo/domain/entities/task.dart';
 import 'package:todo_app/features/todo/presentation/controllers/todo_list_controller.dart';
 import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.dart';
+import 'package:todo_app/features/todo/presentation/views/archive_view.dart';
+import 'package:todo_app/features/todo/presentation/views/trash_view.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -23,7 +27,56 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_titles[_currentIndex]), elevation: 0),
+      appBar: AppBar(
+        title: Text(_titles[_currentIndex]),
+        elevation: 0,
+        actions: _currentIndex == 0
+            ? [
+                PopupMenuButton<String>(
+                  key: const Key('homeMenuButton'),
+                  onSelected: (value) {
+                    if (value == 'archive') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ArchiveView(),
+                        ),
+                      );
+                    } else if (value == 'trash') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TrashView(),
+                        ),
+                      );
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'archive',
+                      child: Row(
+                        children: [
+                          Icon(Icons.archive_outlined),
+                          SizedBox(width: 8),
+                          Text('Archive'),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: 'trash',
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete_outline),
+                          SizedBox(width: 8),
+                          Text('Trash'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ]
+            : null,
+      ),
       body: IndexedStack(
         index: _currentIndex,
         children: const [TodoTab(), TagsTab(), SettingsTab()],
@@ -431,17 +484,6 @@ class _TagsTabState extends ConsumerState<TagsTab> {
   final TextEditingController _categoryNameController = TextEditingController();
   Color _selectedColor = Colors.indigo;
 
-  final List<Color> _colorPresets = [
-    Colors.indigo,
-    Colors.red,
-    Colors.orange,
-    Colors.green,
-    Colors.blue,
-    Colors.pink,
-    Colors.purple,
-    Colors.teal,
-  ];
-
   @override
   void dispose() {
     _categoryNameController.dispose();
@@ -454,7 +496,8 @@ class _TagsTabState extends ConsumerState<TagsTab> {
 
     return categoriesAsync.when(
       data: (categories) {
-        return Column(
+        return ListView(
+          padding: const EdgeInsets.only(bottom: 100),
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
@@ -470,50 +513,30 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                       ),
                       const SizedBox(height: 12),
                       TextField(
+                        key: const Key('createTagNameField'),
                         controller: _categoryNameController,
                         decoration: const InputDecoration(
                           hintText: 'Tag Name',
                           border: OutlineInputBorder(),
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        height: 40,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _colorPresets.length,
-                          itemBuilder: (context, index) {
-                            final color = _colorPresets[index];
-                            final isSelected = color == _selectedColor;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedColor = color;
-                                });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  color: color,
-                                  shape: BoxShape.circle,
-                                  border: isSelected
-                                      ? Border.all(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onSurface,
-                                          width: 3,
-                                        )
-                                      : null,
-                                ),
-                              ),
-                            );
-                          },
+                      const SizedBox(height: 16),
+                      Text(
+                        'Tag Color',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
+                      CategoryColorPicker(
+                        initialColor: _selectedColor,
+                        onColorChanged: (color) {
+                          _selectedColor = color;
+                        },
+                      ),
+                      const SizedBox(height: 16),
                       ElevatedButton(
+                        key: const Key('addTagButton'),
                         onPressed: () async {
                           final name = _categoryNameController.text.trim();
                           if (name.isNotEmpty) {
@@ -537,41 +560,53 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                 ),
               ),
             ),
-            Expanded(
-              child: categories.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No tags created yet.',
-                        style: TextStyle(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withAlpha(120),
-                        ),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        final color = _parseHexColor(category.colorHex);
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: color,
-                            radius: 12,
-                          ),
-                          title: Text(category.name),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete_outline),
-                            onPressed: () {
-                              ref
-                                  .read(categoryListControllerProvider.notifier)
-                                  .deleteCategory(category.id);
-                            },
-                          ),
-                        );
-                      },
+            if (categories.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Center(
+                  child: Text(
+                    'No tags created yet.',
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withAlpha(120),
                     ),
-            ),
+                  ),
+                ),
+              )
+            else
+              ...categories.map((category) {
+                final color = _parseHexColor(category.colorHex);
+                return ListTile(
+                  leading: CircleAvatar(backgroundColor: color, radius: 12),
+                  title: Text(category.name),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        key: Key('edit_category_${category.id}'),
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                EditCategoryDialog(category: category),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        key: Key('delete_category_${category.id}'),
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () {
+                          ref
+                              .read(categoryListControllerProvider.notifier)
+                              .deleteCategory(category.id);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }),
           ],
         );
       },
@@ -619,6 +654,40 @@ class SettingsTab extends ConsumerWidget {
                     ),
                   ],
                 ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Column(
+            children: [
+              ListTile(
+                key: const Key('settingsArchiveTile'),
+                leading: const Icon(Icons.archive_outlined),
+                title: const Text('Archived Tasks'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ArchiveView(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(height: 1),
+              ListTile(
+                key: const Key('settingsTrashTile'),
+                leading: const Icon(Icons.delete_outline),
+                title: const Text('Trash'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TrashView()),
+                  );
+                },
               ),
             ],
           ),
