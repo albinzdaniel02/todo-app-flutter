@@ -6,20 +6,51 @@ part of 'todo_list_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$archivedTasksListHash() => r'15fa629cdcee2233148b5346ccc56ecb442de0eb';
+
+/// See also [archivedTasksList].
+@ProviderFor(archivedTasksList)
+final archivedTasksListProvider =
+    AutoDisposeStreamProvider<List<Task>>.internal(
+  archivedTasksList,
+  name: r'archivedTasksListProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$archivedTasksListHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ArchivedTasksListRef = AutoDisposeStreamProviderRef<List<Task>>;
+String _$trashedTasksListHash() => r'0aa98626d4f135842e15eb565e7f937f807e7d12';
+
+/// See also [trashedTasksList].
+@ProviderFor(trashedTasksList)
+final trashedTasksListProvider = AutoDisposeStreamProvider<List<Task>>.internal(
+  trashedTasksList,
+  name: r'trashedTasksListProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$trashedTasksListHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef TrashedTasksListRef = AutoDisposeStreamProviderRef<List<Task>>;
 String _$todoSearchQueryHash() => r'9c868e0611bbf503a980466a9c1aacb823fa612f';
 
 /// See also [TodoSearchQuery].
 @ProviderFor(TodoSearchQuery)
 final todoSearchQueryProvider =
     AutoDisposeNotifierProvider<TodoSearchQuery, String>.internal(
-      TodoSearchQuery.new,
-      name: r'todoSearchQueryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todoSearchQueryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  TodoSearchQuery.new,
+  name: r'todoSearchQueryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoSearchQueryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TodoSearchQuery = AutoDisposeNotifier<String>;
 String _$todoCategoryFilterHash() =>
@@ -29,14 +60,14 @@ String _$todoCategoryFilterHash() =>
 @ProviderFor(TodoCategoryFilter)
 final todoCategoryFilterProvider =
     AutoDisposeNotifierProvider<TodoCategoryFilter, String?>.internal(
-      TodoCategoryFilter.new,
-      name: r'todoCategoryFilterProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todoCategoryFilterHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  TodoCategoryFilter.new,
+  name: r'todoCategoryFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoCategoryFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TodoCategoryFilter = AutoDisposeNotifier<String?>;
 String _$todoPriorityFilterHash() =>
@@ -46,14 +77,14 @@ String _$todoPriorityFilterHash() =>
 @ProviderFor(TodoPriorityFilter)
 final todoPriorityFilterProvider =
     AutoDisposeNotifierProvider<TodoPriorityFilter, TaskPriority?>.internal(
-      TodoPriorityFilter.new,
-      name: r'todoPriorityFilterProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todoPriorityFilterHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  TodoPriorityFilter.new,
+  name: r'todoPriorityFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoPriorityFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TodoPriorityFilter = AutoDisposeNotifier<TaskPriority?>;
 String _$todoStatusFilterStateHash() =>
@@ -61,19 +92,16 @@ String _$todoStatusFilterStateHash() =>
 
 /// See also [TodoStatusFilterState].
 @ProviderFor(TodoStatusFilterState)
-final todoStatusFilterStateProvider =
-    AutoDisposeNotifierProvider<
-      TodoStatusFilterState,
-      TodoStatusFilter
-    >.internal(
-      TodoStatusFilterState.new,
-      name: r'todoStatusFilterStateProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todoStatusFilterStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final todoStatusFilterStateProvider = AutoDisposeNotifierProvider<
+    TodoStatusFilterState, TodoStatusFilter>.internal(
+  TodoStatusFilterState.new,
+  name: r'todoStatusFilterStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoStatusFilterStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TodoStatusFilterState = AutoDisposeNotifier<TodoStatusFilter>;
 String _$todoSortOptionStateHash() =>
@@ -83,14 +111,14 @@ String _$todoSortOptionStateHash() =>
 @ProviderFor(TodoSortOptionState)
 final todoSortOptionStateProvider =
     AutoDisposeNotifierProvider<TodoSortOptionState, TodoSortOption>.internal(
-      TodoSortOptionState.new,
-      name: r'todoSortOptionStateProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todoSortOptionStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  TodoSortOptionState.new,
+  name: r'todoSortOptionStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoSortOptionStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TodoSortOptionState = AutoDisposeNotifier<TodoSortOption>;
 String _$todoListControllerHash() =>
@@ -100,14 +128,14 @@ String _$todoListControllerHash() =>
 @ProviderFor(TodoListController)
 final todoListControllerProvider =
     AutoDisposeStreamNotifierProvider<TodoListController, List<Task>>.internal(
-      TodoListController.new,
-      name: r'todoListControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todoListControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  TodoListController.new,
+  name: r'todoListControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$todoListControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TodoListController = AutoDisposeStreamNotifier<List<Task>>;
 // ignore_for_file: type=lint
