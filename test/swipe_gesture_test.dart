@@ -160,6 +160,13 @@ void main() {
   testWidgets('Swipe right to toggle completion status', (
     WidgetTester tester,
   ) async {
+    tester.view.physicalSize = const Size(600, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     // 1. Seed repository with an incomplete task
     final task = Task(
       id: 'task-1',
@@ -200,6 +207,13 @@ void main() {
   });
 
   testWidgets('Swipe left to soft-delete task', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(600, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     // 1. Seed repository with an active task
     final task = Task(
       id: 'task-2',

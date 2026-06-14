@@ -26,6 +26,13 @@ void main() {
   testWidgets(
     'AddTaskBottomSheet validation, priority selection, category selection, and task creation',
     (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(600, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       // 1. Seed categories
       final category = const Category(
         id: 'cat-1',
@@ -117,6 +124,13 @@ void main() {
   testWidgets('AddTaskBottomSheet can cancel due date selection and clear it', (
     WidgetTester tester,
   ) async {
+    tester.view.physicalSize = const Size(600, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -163,6 +177,13 @@ void main() {
   testWidgets('AddTaskBottomSheet can successfully select due date and time', (
     WidgetTester tester,
   ) async {
+    tester.view.physicalSize = const Size(600, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     await tester.pumpWidget(
       ProviderScope(
         overrides: [

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_controller.dart';
+import 'core/widgets/responsive_layout.dart';
 import 'features/todo/data/models/subtask.dart';
 import 'features/todo/data/models/category.dart';
 import 'features/todo/data/models/task.dart';
@@ -40,7 +41,14 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
       themeMode: themeMode,
-      home: const HomeView(),
+      home: const ResponsiveLayout(
+        mobileLayout: HomeView(),
+        desktopLayout: Scaffold(
+          body: Center(
+            child: Text('Desktop View Stub', key: Key('desktop_view_stub')),
+          ),
+        ),
+      ),
     );
   }
 }

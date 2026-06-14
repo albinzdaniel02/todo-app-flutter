@@ -13,6 +13,13 @@ import 'package:todo_app/main.dart';
 
 void main() {
   testWidgets('HomeView navigation and tabs test', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(600, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(const ProviderScope(child: MyApp()));
 
