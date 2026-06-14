@@ -110,7 +110,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 ## Phase 6: Web & Responsive UI (`P6`)
 
-- [ ] **P6-1**: Create a responsive `ResponsiveLayout` wrapper component to switch layouts based on viewport width.
+- [x] **P6-1**: Create a responsive `ResponsiveLayout` wrapper component to switch layouts based on viewport width.
 - [ ] **P6-2**: Build widescreen left navigation sidebar/rail.
 - [ ] **P6-3**: Build widescreen split-pane layout (Middle: scrollable task list; Right: side sheet editor showing notes, subtask checklist, and metadata).
 
