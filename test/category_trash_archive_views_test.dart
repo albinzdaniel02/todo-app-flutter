@@ -5,7 +5,7 @@ import 'package:todo_app/features/category/data/repositories/category_repository
 import 'package:todo_app/features/todo/data/repositories/todo_repository_provider.dart';
 import 'package:todo_app/features/todo/domain/entities/task.dart';
 import 'package:todo_app/main.dart';
-import 'swipe_gesture_test.dart';
+import 'fakes.dart';
 
 void main() {
   late FakeTodoRepository fakeTodoRepository;

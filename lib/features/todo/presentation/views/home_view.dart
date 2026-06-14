@@ -13,23 +13,17 @@ import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.
 import 'package:todo_app/features/todo/presentation/views/archive_view.dart';
 import 'package:todo_app/features/todo/presentation/views/trash_view.dart';
 
-class HomeView extends ConsumerStatefulWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
-  ConsumerState<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends ConsumerState<HomeView> {
-  final List<String> _titles = ['My Tasks', 'Tags', 'Settings'];
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(navigationControllerProvider);
+    final titles = const ['My Tasks', 'Tags', 'Settings'];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[currentIndex]),
+        title: Text(titles[currentIndex]),
         elevation: 0,
         actions: currentIndex == 0
             ? [

@@ -7,7 +7,7 @@ import 'package:todo_app/features/todo/data/repositories/todo_repository_provide
 import 'package:todo_app/features/todo/domain/entities/task.dart';
 import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.dart';
 import 'package:todo_app/main.dart';
-import 'swipe_gesture_test.dart';
+import 'fakes.dart';
 
 void main() {
   late FakeTodoRepository fakeTodoRepository;

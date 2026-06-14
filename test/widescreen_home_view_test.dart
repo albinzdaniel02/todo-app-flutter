@@ -7,7 +7,7 @@ import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.
 import 'package:todo_app/features/todo/presentation/views/archive_view.dart';
 import 'package:todo_app/features/todo/presentation/views/trash_view.dart';
 import 'package:todo_app/main.dart';
-import 'swipe_gesture_test.dart';
+import 'fakes.dart';
 
 void main() {
   late FakeTodoRepository fakeTodoRepository;
@@ -82,8 +82,8 @@ void main() {
 
     expect(find.byType(ArchiveView), findsOneWidget);
 
-    // Pop the ArchiveView
-    Navigator.pop(tester.element(find.byType(ArchiveView)));
+    // Pop the ArchiveView by tapping the default back button
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
 
     // 3. Test AppBar popup menu navigation to TrashView
@@ -95,8 +95,8 @@ void main() {
 
     expect(find.byType(TrashView), findsOneWidget);
 
-    // Pop the TrashView
-    Navigator.pop(tester.element(find.byType(TrashView)));
+    // Pop the TrashView by tapping the default back button
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
 
     // 4. Tap on 'Tags' destination in the NavigationRail

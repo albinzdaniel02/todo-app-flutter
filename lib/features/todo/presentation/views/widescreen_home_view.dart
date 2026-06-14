@@ -30,6 +30,7 @@ class WidescreenHomeView extends ConsumerWidget {
                 Icons.playlist_add_check,
                 size: 36,
                 color: Colors.blue,
+                semanticLabel: 'App Logo',
               ),
             ),
             destinations: const [
@@ -117,6 +118,7 @@ class WidescreenHomeView extends ConsumerWidget {
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
+                          constraints: const BoxConstraints(maxWidth: 600),
                           builder: (context) => const AddTaskBottomSheet(),
                         );
                       },
