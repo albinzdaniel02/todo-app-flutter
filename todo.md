@@ -100,10 +100,10 @@ This checklist tracks progress throughout the implementation phase. Each task co
 - [x] **P5-2**: Build mobile Home View containing navigation tabs, search/filter bar, and lists of tasks.
 - [x] **P5-3**: Build Task Tile Card with swipe gestures (swipe-left to soft-delete/archive, swipe-right to toggle completion).
 - [x] **P5-4**: Build Bottom Sheet Task Creator with forms, due date picker, priority selector, and category dropdown.
-- [ ] **P5-5**: Build Category management lists (add/edit tags with custom colors) and Trash/Archive views.
+- [x] **P5-5**: Build Category management lists (add/edit tags with custom colors) and Trash/Archive views.
 
 ### P5 Exit Checks
-- [ ] Mobile view renders cleanly on Android/iOS simulators.
+- [x] Mobile view renders cleanly on Android/iOS simulators.
 - [x] Swipe gestures trigger the correct database mutations.
 
 ---
