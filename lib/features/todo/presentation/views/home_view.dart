@@ -6,6 +6,7 @@ import 'package:todo_app/features/category/domain/entities/category.dart';
 import 'package:todo_app/features/category/presentation/controllers/category_list_controller.dart';
 import 'package:todo_app/features/todo/domain/entities/task.dart';
 import 'package:todo_app/features/todo/presentation/controllers/todo_list_controller.dart';
+import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -66,10 +67,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) => const AddTaskBottomSheetStub(),
+      backgroundColor: Colors.transparent,
+      builder: (context) => const AddTaskBottomSheet(),
     );
   }
 }
@@ -637,201 +636,6 @@ class SettingsTab extends ConsumerWidget {
       case ThemeMode.dark:
         return 'Dark Mode';
     }
-  }
-}
-
-class AddTaskBottomSheetStub extends ConsumerStatefulWidget {
-  const AddTaskBottomSheetStub({super.key});
-
-  @override
-  ConsumerState<AddTaskBottomSheetStub> createState() =>
-      _AddTaskBottomSheetStubState();
-}
-
-class _AddTaskBottomSheetStubState
-    extends ConsumerState<AddTaskBottomSheetStub> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
-  String? _selectedCategoryId;
-  TaskPriority _selectedPriority = TaskPriority.medium;
-  DateTime? _selectedDueDate;
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final categoriesAsync = ref.watch(categoryListControllerProvider);
-
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-        top: 16,
-        left: 16,
-        right: 16,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'New Task (Stub Creator)',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Task Title',
-                border: OutlineInputBorder(),
-              ),
-              autofocus: true,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _descController,
-              decoration: const InputDecoration(
-                labelText: 'Description (Optional)',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Priority selector
-            DropdownButtonFormField<TaskPriority>(
-              initialValue: _selectedPriority,
-              decoration: const InputDecoration(
-                labelText: 'Priority',
-                border: OutlineInputBorder(),
-              ),
-              items: TaskPriority.values.map((priority) {
-                return DropdownMenuItem(
-                  value: priority,
-                  child: Text(priority.name.toUpperCase()),
-                );
-              }).toList(),
-              onChanged: (val) {
-                if (val != null) {
-                  setState(() {
-                    _selectedPriority = val;
-                  });
-                }
-              },
-            ),
-            const SizedBox(height: 12),
-            // Category selector
-            categoriesAsync.when(
-              data: (categories) {
-                return DropdownButtonFormField<String>(
-                  initialValue: _selectedCategoryId,
-                  decoration: const InputDecoration(
-                    labelText: 'Tag / Category (Optional)',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: [
-                    const DropdownMenuItem(value: null, child: Text('No Tag')),
-                    ...categories.map((category) {
-                      return DropdownMenuItem(
-                        value: category.id,
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: _parseHexColor(
-                                category.colorHex,
-                              ),
-                              radius: 8,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(category.name),
-                          ],
-                        ),
-                      );
-                    }),
-                  ],
-                  onChanged: (val) {
-                    setState(() {
-                      _selectedCategoryId = val;
-                    });
-                  },
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => const SizedBox.shrink(),
-            ),
-            const SizedBox(height: 12),
-            // Due date picker list tile
-            ListTile(
-              title: Text(
-                _selectedDueDate == null
-                    ? 'No Due Date'
-                    : 'Due: ${_formatDateTime(_selectedDueDate!)}',
-              ),
-              trailing: const Icon(Icons.calendar_month),
-              onTap: () async {
-                final date = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now().subtract(const Duration(days: 365)),
-                  lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
-                );
-                if (date != null && context.mounted) {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  );
-                  if (time != null) {
-                    setState(() {
-                      _selectedDueDate = DateTime(
-                        date.year,
-                        date.month,
-                        date.day,
-                        time.hour,
-                        time.minute,
-                      );
-                    });
-                  }
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                final title = _titleController.text.trim();
-                if (title.isEmpty) return;
-
-                await ref
-                    .read(todoListControllerProvider.notifier)
-                    .addTask(
-                      title: title,
-                      description: _descController.text.trim(),
-                      categoryId: _selectedCategoryId,
-                      priority: _selectedPriority.name,
-                      dueDate: _selectedDueDate,
-                    );
-
-                if (context.mounted) {
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Add Task'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 
