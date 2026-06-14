@@ -159,4 +159,66 @@ void main() {
     expect(find.byType(DatePickerDialog), findsNothing);
     expect(find.text('Set Due Date'), findsOneWidget);
   });
+
+  testWidgets('AddTaskBottomSheet can successfully select due date and time', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          todoRepositoryProvider.overrideWithValue(fakeTodoRepository),
+          categoryRepositoryProvider.overrideWithValue(fakeCategoryRepository),
+        ],
+        child: const MyApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Open Bottom Sheet
+    await tester.tap(find.byTooltip('Add Task'));
+    await tester.pumpAndSettle();
+
+    // Fill title
+    await tester.enterText(
+      find.byKey(const Key('taskTitleField')),
+      'Due Date Task',
+    );
+    await tester.pumpAndSettle();
+
+    // Tap due date picker
+    final datePickerButtonFinder = find.byKey(const Key('dueDatePicker'));
+    await tester.tap(datePickerButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Tap OK on DatePickerDialog
+    final okBtn = find.text('OK');
+    if (okBtn.evaluate().isNotEmpty) {
+      await tester.tap(okBtn);
+    } else {
+      await tester.tap(find.text('Select'));
+    }
+    await tester.pumpAndSettle();
+
+    // Tap OK on TimePickerDialog
+    final timeOkBtn = find.text('OK');
+    if (timeOkBtn.evaluate().isNotEmpty) {
+      await tester.tap(timeOkBtn);
+    } else {
+      await tester.tap(find.text('Select'));
+    }
+    await tester.pumpAndSettle();
+
+    // Verify due date is selected and no longer says 'Set Due Date'
+    expect(find.text('Set Due Date'), findsNothing);
+
+    // Tap submit button
+    final submitButtonFinder = find.byKey(const Key('submitTaskButton'));
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Verify task is saved in repository with a non-null dueDate
+    final tasks = await fakeTodoRepository.getTasks();
+    expect(tasks, hasLength(1));
+    expect(tasks.first.dueDate, isNotNull);
+  });
 }

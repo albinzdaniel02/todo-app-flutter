@@ -71,7 +71,7 @@ class _AddTaskBottomSheetState extends ConsumerState<AddTaskBottomSheet> {
             : TimeOfDay.now(),
       );
 
-      if (time != null) {
+      if (time != null && mounted) {
         setState(() {
           _selectedDueDate = DateTime(
             date.year,
