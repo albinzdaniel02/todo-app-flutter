@@ -24,7 +24,7 @@ void main() {
   testWidgets('Category management: Add, edit, and delete categories', (
     WidgetTester tester,
   ) async {
-    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.physicalSize = const Size(600, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
       tester.view.resetPhysicalSize();
@@ -109,7 +109,7 @@ void main() {
   testWidgets('Archive View: Display, unarchive, and move to trash', (
     WidgetTester tester,
   ) async {
-    tester.view.physicalSize = const Size(800, 1000);
+    tester.view.physicalSize = const Size(600, 1000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
       tester.view.resetPhysicalSize();
@@ -185,7 +185,7 @@ void main() {
   testWidgets(
     'Trash View: Display, restore, delete permanently, and empty trash',
     (WidgetTester tester) async {
-      tester.view.physicalSize = const Size(800, 1000);
+      tester.view.physicalSize = const Size(600, 1000);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
         tester.view.resetPhysicalSize();
