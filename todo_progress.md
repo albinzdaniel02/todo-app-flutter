@@ -12,10 +12,10 @@ This file tracks the completion progress of the tasks listed in [todo.md](todo.m
 | Phase 3 | State Management | 2 | 2 | Completed |
 | Phase 4 | Platform Services & Notifications | 4 | 4 | Completed |
 | Phase 5 | Mobile UI | 5 | 5 | Completed |
-| Phase 6 | Web & Responsive UI | 3 | 2 | In Progress |
+| Phase 6 | Web & Responsive UI | 3 | 3 | Completed |
 | Phase 7 | Testing & Final Polish | 3 | 0 | Not Started |
 
-**Total Progress:** 23 / 27 tasks completed (85.2%)
+**Total Progress:** 24 / 27 tasks completed (88.9%)
 
 ## Latest Update
-- **P6-2**: Build widescreen left navigation sidebar/rail is **Completed** and merged into `main`.
+- **P6-3**: Build widescreen split-pane layout is **Completed** and merged into `main`.

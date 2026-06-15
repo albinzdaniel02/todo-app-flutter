@@ -112,11 +112,11 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 - [x] **P6-1**: Create a responsive `ResponsiveLayout` wrapper component to switch layouts based on viewport width.
 - [x] **P6-2**: Build widescreen left navigation sidebar/rail.
-- [ ] **P6-3**: Build widescreen split-pane layout (Middle: scrollable task list; Right: side sheet editor showing notes, subtask checklist, and metadata).
+- [x] **P6-3**: Build widescreen split-pane layout (Middle: scrollable task list; Right: side sheet editor showing notes, subtask checklist, and metadata).
 
 ### P6 Exit Checks
 - [x] Interface switches seamlessly when resizing window (e.g. crossing 768px width).
-- [ ] Selecting tasks on Web opens details immediately in the right pane.
+- [x] Selecting tasks on Web opens details immediately in the right pane.
 
 ---
 
