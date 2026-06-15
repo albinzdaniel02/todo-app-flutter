@@ -8,6 +8,7 @@ import 'features/todo/data/models/subtask.dart';
 import 'features/todo/data/models/category.dart';
 import 'features/todo/data/models/task.dart';
 import 'features/todo/presentation/views/home_view.dart';
+import 'features/todo/presentation/views/widescreen_home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,11 +44,7 @@ class MyApp extends ConsumerWidget {
       themeMode: themeMode,
       home: const ResponsiveLayout(
         mobileLayout: HomeView(),
-        desktopLayout: Scaffold(
-          body: Center(
-            child: Text('Desktop View Stub', key: Key('desktop_view_stub')),
-          ),
-        ),
+        desktopLayout: WidescreenHomeView(),
       ),
     );
   }

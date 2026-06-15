@@ -146,3 +146,51 @@ git push origin main
 - **P7-1**: Write unit tests for database models and Riverpod state controllers.
 - **P7-2**: Write widget tests checking light/dark mode and responsive layouts.
 - **P7-3**: Conduct manual QA validations for database state persistence and offline usage.
+
+## Resuming Work After Server Restarts or Network Failures
+
+If the agent connection is interrupted (e.g. server restart, model quota exhaustion 429 errors), follow this structured recovery workflow to resume progress seamlessly:
+
+### 1. Verify Current Local Branch & Workspace Status
+Check which branch you are on and the status of modifications:
+```bash
+git branch
+git status
+```
+Identify the active task name from the branch name (e.g., branch `P6-2` indicates you are on task `P6-2`).
+
+### 2. Inspect Pull Requests (PRs)
+Check if a Pull Request has already been opened for the task branch:
+```bash
+gh pr list --state all
+```
+If a PR is open:
+- Inspect its details and review comments:
+  ```bash
+  gh pr view <pr-number>
+  ```
+- Run tests to see if the current code on the branch compiles and passes:
+  ```bash
+  flutter test
+  ```
+
+### 3. Recover/Revive the Task
+Depending on where the subagent got interrupted:
+- **Case A: Code Implementation Incomplete**:
+  - Re-examine changes made. Read only the relevant directories or files listed in `git status` or git commits rather than reading the entire codebase.
+  - Resume editing and coding.
+- **Case B: Code Implementation Complete but PR Review Interrupted**:
+  - If code is written and tests pass, but the code reviewer subagent was not run or completed, launch a fresh code reviewer subagent using `define_subagent` and `invoke_subagent`.
+  - Pass the git diff via file or prompt, along with the context of how many tests are currently passing.
+  - Address review comments, commit, push, and merge.
+- **Case C: Code merged but Docs / Checklist not updated**:
+  - If the branch has already been merged (evident from `git log` on `main`), checkout `main`, pull the remote, check the task as done in `todo.md`, commit and push, and update `todo_progress.md`.
+
+### 4. Efficient Code Reading
+When resuming, do not waste time reading unrelated files. Query `git diff` or `git status` to identify modified files, and use `view_file` on those files only.
+
+---
+
+For detailed, step-by-step instructions on resuming work under different scenarios, refer to the project's [Recovery Guidelines](file:///C:/Users/ALBIN/Desktop/main/Albin/DEV/todo-app/docs/recovery-guidelines.md).
+
+

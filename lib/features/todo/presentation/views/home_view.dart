@@ -7,30 +7,25 @@ import 'package:todo_app/features/category/presentation/controllers/category_lis
 import 'package:todo_app/features/category/presentation/views/category_color_picker.dart';
 import 'package:todo_app/features/category/presentation/views/edit_category_dialog.dart';
 import 'package:todo_app/features/todo/domain/entities/task.dart';
+import 'package:todo_app/features/todo/presentation/controllers/navigation_controller.dart';
 import 'package:todo_app/features/todo/presentation/controllers/todo_list_controller.dart';
 import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.dart';
 import 'package:todo_app/features/todo/presentation/views/archive_view.dart';
 import 'package:todo_app/features/todo/presentation/views/trash_view.dart';
 
-class HomeView extends ConsumerStatefulWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
-  ConsumerState<HomeView> createState() => _HomeViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(navigationControllerProvider);
+    final titles = const ['My Tasks', 'Tags', 'Settings'];
 
-class _HomeViewState extends ConsumerState<HomeView> {
-  int _currentIndex = 0;
-
-  final List<String> _titles = ['My Tasks', 'Tags', 'Settings'];
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_currentIndex]),
+        title: Text(titles[currentIndex]),
         elevation: 0,
-        actions: _currentIndex == 0
+        actions: currentIndex == 0
             ? [
                 PopupMenuButton<String>(
                   key: const Key('homeMenuButton'),
@@ -78,15 +73,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
             : null,
       ),
       body: IndexedStack(
-        index: _currentIndex,
+        index: currentIndex,
         children: const [TodoTab(), TagsTab(), SettingsTab()],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          ref.read(navigationControllerProvider.notifier).setIndex(index);
         },
         items: const [
           BottomNavigationBarItem(
@@ -106,7 +99,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ],
       ),
-      floatingActionButton: _currentIndex == 0
+      floatingActionButton: currentIndex == 0
           ? FloatingActionButton(
               onPressed: () => _showAddTaskBottomSheet(context),
               tooltip: 'Add Task',
