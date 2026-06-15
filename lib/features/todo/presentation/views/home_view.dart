@@ -12,6 +12,7 @@ import 'package:todo_app/features/todo/presentation/controllers/todo_list_contro
 import 'package:todo_app/features/todo/presentation/views/add_task_bottom_sheet.dart';
 import 'package:todo_app/features/todo/presentation/views/archive_view.dart';
 import 'package:todo_app/features/todo/presentation/views/trash_view.dart';
+import 'package:todo_app/features/todo/presentation/views/task_detail_pane.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -140,8 +141,11 @@ class _TodoTabState extends ConsumerState<TodoTab> {
     final tasksAsync = ref.watch(todoListControllerProvider);
     final categoriesAsync = ref.watch(categoryListControllerProvider);
     final selectedCategoryId = ref.watch(todoCategoryFilterProvider);
+    final selectedTaskId = ref.watch(selectedTaskIdProvider);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWidescreen = screenWidth >= 768.0;
 
-    return Column(
+    final listPanel = Column(
       children: [
         // Search bar
         Padding(
@@ -291,6 +295,8 @@ class _TodoTabState extends ConsumerState<TodoTab> {
                     }
                   });
 
+                  final isSelected = selectedTaskId == task.id;
+
                   return Dismissible(
                     key: Key('task_${task.id}'),
                     background: Container(
@@ -328,6 +334,12 @@ class _TodoTabState extends ConsumerState<TodoTab> {
                             .read(todoListControllerProvider.notifier)
                             .softDeleteTask(task.id);
 
+                        if (selectedTaskId == task.id) {
+                          ref
+                              .read(selectedTaskIdProvider.notifier)
+                              .select(null);
+                        }
+
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -344,112 +356,129 @@ class _TodoTabState extends ConsumerState<TodoTab> {
                         );
                       }
                     },
-                    child: Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.outline.withAlpha(40),
+                    child: GestureDetector(
+                      key: Key('task_card_gesture_${task.id}'),
+                      onTap: () {
+                        ref
+                            .read(selectedTaskIdProvider.notifier)
+                            .select(task.id);
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        color: isSelected
+                            ? Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer.withAlpha(50)
+                            : null,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withAlpha(40),
+                            width: isSelected ? 2.0 : 1.0,
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Checkbox(
-                                  value: task.isCompleted,
-                                  onChanged: (_) {
-                                    ref
-                                        .read(
-                                          todoListControllerProvider.notifier,
-                                        )
-                                        .toggleTaskCompletion(task.id);
-                                  },
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          task.title,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium
-                                              ?.copyWith(
-                                                decoration: task.isCompleted
-                                                    ? TextDecoration.lineThrough
-                                                    : null,
-                                                color: task.isCompleted
-                                                    ? Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurface
-                                                          .withAlpha(120)
-                                                    : null,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        if (task.description.isNotEmpty) ...[
-                                          const SizedBox(height: 4),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Checkbox(
+                                    value: task.isCompleted,
+                                    onChanged: (_) {
+                                      ref
+                                          .read(
+                                            todoListControllerProvider.notifier,
+                                          )
+                                          .toggleTaskCompletion(task.id);
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
                                           Text(
-                                            task.description,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
+                                            task.title,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyMedium
+                                                .titleMedium
                                                 ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurfaceVariant,
+                                                  decoration: task.isCompleted
+                                                      ? TextDecoration
+                                                            .lineThrough
+                                                      : null,
+                                                  color: task.isCompleted
+                                                      ? Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface
+                                                            .withAlpha(120)
+                                                      : null,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                           ),
+                                          if (task.description.isNotEmpty) ...[
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              task.description,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                  ),
+                                            ),
+                                          ],
                                         ],
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            // Badges Row
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                // Priority Badge
-                                _Badge(
-                                  label: task.priority.name.toUpperCase(),
-                                  color: _getPriorityColor(task.priority),
-                                ),
-
-                                // Category Badge
-                                if (taskCategory != null)
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Badges Row
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  // Priority Badge
                                   _Badge(
-                                    label: taskCategory!.name,
-                                    color: _parseHexColor(
-                                      taskCategory!.colorHex,
+                                    label: task.priority.name.toUpperCase(),
+                                    color: _getPriorityColor(task.priority),
+                                  ),
+
+                                  // Category Badge
+                                  if (taskCategory != null)
+                                    _Badge(
+                                      label: taskCategory!.name,
+                                      color: _parseHexColor(
+                                        taskCategory!.colorHex,
+                                      ),
                                     ),
-                                  ),
 
-                                // Due Date Badge
-                                if (task.dueDate != null)
-                                  _Badge(
-                                    label: _formatDateTime(task.dueDate!),
-                                    color: Colors.blue.shade600,
-                                    icon: Icons.calendar_today,
-                                  ),
-                              ],
-                            ),
-                          ],
+                                  // Due Date Badge
+                                  if (task.dueDate != null)
+                                    _Badge(
+                                      label: _formatDateTime(task.dueDate!),
+                                      color: Colors.blue.shade600,
+                                      icon: Icons.calendar_today,
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -463,6 +492,19 @@ class _TodoTabState extends ConsumerState<TodoTab> {
         ),
       ],
     );
+
+    if (isWidescreen) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(flex: 5, child: listPanel),
+          const VerticalDivider(width: 1, thickness: 1),
+          const Expanded(flex: 6, child: TaskDetailPane()),
+        ],
+      );
+    } else {
+      return listPanel;
+    }
   }
 }
 

@@ -124,6 +124,22 @@ final todoSortOptionStateProvider =
     );
 
 typedef _$TodoSortOptionState = AutoDisposeNotifier<TodoSortOption>;
+String _$selectedTaskIdHash() => r'3db5eaa0a87edda3e5078304c39b2dd4178dfe1c';
+
+/// See also [SelectedTaskId].
+@ProviderFor(SelectedTaskId)
+final selectedTaskIdProvider =
+    AutoDisposeNotifierProvider<SelectedTaskId, String?>.internal(
+      SelectedTaskId.new,
+      name: r'selectedTaskIdProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$selectedTaskIdHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$SelectedTaskId = AutoDisposeNotifier<String?>;
 String _$todoListControllerHash() =>
     r'bfd93108c9061ed159cb2e4f07ebf0a42ec350d9';
 

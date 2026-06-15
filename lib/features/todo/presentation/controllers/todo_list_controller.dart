@@ -51,6 +51,14 @@ class TodoSortOptionState extends _$TodoSortOptionState {
 }
 
 @riverpod
+class SelectedTaskId extends _$SelectedTaskId {
+  @override
+  String? build() => null;
+
+  void select(String? id) => state = id;
+}
+
+@riverpod
 class TodoListController extends _$TodoListController {
   @override
   Stream<List<Task>> build() {
