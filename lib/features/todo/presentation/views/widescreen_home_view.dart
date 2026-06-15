@@ -12,7 +12,7 @@ class WidescreenHomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(navigationControllerProvider);
-    final titles = ['My Tasks', 'Tags', 'Settings'];
+    final titles = const ['My Tasks', 'Tags', 'Settings'];
 
     return Material(
       child: Row(
