@@ -586,6 +586,7 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                                 .read(categoryListControllerProvider.notifier)
                                 .addCategory(name: name, colorHex: colorHex);
                             _categoryNameController.clear();
+                            messenger.hideCurrentSnackBar();
                             messenger.showSnackBar(
                               SnackBar(
                                 content: Text('Tag "$name" created!'),

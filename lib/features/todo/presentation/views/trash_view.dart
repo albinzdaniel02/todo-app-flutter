@@ -130,19 +130,19 @@ class TrashView extends ConsumerWidget {
                                 icon: const Icon(Icons.restore),
                                 tooltip: 'Restore task',
                                 onPressed: () async {
+                                  final messenger = ScaffoldMessenger.of(
+                                    context,
+                                  );
                                   await ref
                                       .read(todoListControllerProvider.notifier)
                                       .restoreTask(task.id);
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          '"${task.title}" restored',
-                                        ),
-                                        duration: const Duration(seconds: 4),
-                                      ),
-                                    );
-                                  }
+                                  messenger.hideCurrentSnackBar();
+                                  messenger.showSnackBar(
+                                    SnackBar(
+                                      content: Text('"${task.title}" restored'),
+                                      duration: const Duration(seconds: 4),
+                                    ),
+                                  );
                                 },
                               ),
                               IconButton(
@@ -220,16 +220,18 @@ class TrashView extends ConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onError,
             ),
             onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
               await ref.read(todoListControllerProvider.notifier).emptyTrash();
               if (context.mounted) {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Trash emptied'),
-                    duration: Duration(seconds: 4),
-                  ),
-                );
               }
+              messenger.hideCurrentSnackBar();
+              messenger.showSnackBar(
+                const SnackBar(
+                  content: Text('Trash emptied'),
+                  duration: Duration(seconds: 4),
+                ),
+              );
             },
             child: const Text('Empty Trash'),
           ),
@@ -262,18 +264,20 @@ class TrashView extends ConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onError,
             ),
             onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
               await ref
                   .read(todoListControllerProvider.notifier)
                   .deletePermanently(task.id);
               if (context.mounted) {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('"${task.title}" permanently deleted'),
-                    duration: const Duration(seconds: 4),
-                  ),
-                );
               }
+              messenger.hideCurrentSnackBar();
+              messenger.showSnackBar(
+                SnackBar(
+                  content: Text('"${task.title}" permanently deleted'),
+                  duration: const Duration(seconds: 4),
+                ),
+              );
             },
             child: const Text('Delete'),
           ),

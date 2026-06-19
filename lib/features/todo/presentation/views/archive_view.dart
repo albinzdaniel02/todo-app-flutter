@@ -109,19 +109,21 @@ class ArchiveView extends ConsumerWidget {
                                 icon: const Icon(Icons.unarchive),
                                 tooltip: 'Unarchive task',
                                 onPressed: () async {
+                                  final messenger = ScaffoldMessenger.of(
+                                    context,
+                                  );
                                   await ref
                                       .read(todoListControllerProvider.notifier)
                                       .restoreTask(task.id);
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          '"${task.title}" unarchived',
-                                        ),
-                                        duration: const Duration(seconds: 4),
+                                  messenger.hideCurrentSnackBar();
+                                  messenger.showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        '"${task.title}" unarchived',
                                       ),
-                                    );
-                                  }
+                                      duration: const Duration(seconds: 4),
+                                    ),
+                                  );
                                 },
                               ),
                               IconButton(
@@ -134,32 +136,30 @@ class ArchiveView extends ConsumerWidget {
                                   );
                                   final taskId = task.id;
                                   final taskTitle = task.title;
+                                  final messenger = ScaffoldMessenger.of(
+                                    context,
+                                  );
 
                                   await todoListController.softDeleteTask(
                                     taskId,
                                   );
-                                  if (context.mounted) {
-                                    final messenger = ScaffoldMessenger.of(
-                                      context,
-                                    );
-                                    messenger.hideCurrentSnackBar();
-                                    messenger.showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          '"$taskTitle" moved to trash',
-                                        ),
-                                        duration: const Duration(seconds: 4),
-                                        action: SnackBarAction(
-                                          label: 'Undo',
-                                          onPressed: () {
-                                            todoListController.restoreTask(
-                                              taskId,
-                                            );
-                                          },
-                                        ),
+                                  messenger.hideCurrentSnackBar();
+                                  messenger.showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        '"$taskTitle" moved to trash',
                                       ),
-                                    );
-                                  }
+                                      duration: const Duration(seconds: 4),
+                                      action: SnackBarAction(
+                                        label: 'Undo',
+                                        onPressed: () {
+                                          todoListController.restoreTask(
+                                            taskId,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
                                 },
                               ),
                             ],
