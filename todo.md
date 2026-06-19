@@ -122,7 +122,7 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 ## Phase 7: Testing & Final Polish (`P7`)
 
-- [ ] **P7-1**: Write unit tests for database models and Riverpod state controllers.
+- [x] **P7-1**: Write unit tests for database models and Riverpod state controllers.
 - [ ] **P7-2**: Write widget tests checking light/dark mode and responsive layouts.
 - [ ] **P7-3**: Conduct manual QA validations for database state persistence and offline usage.
 
