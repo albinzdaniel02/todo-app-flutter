@@ -196,7 +196,10 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Task updated successfully!')),
+          const SnackBar(
+            content: Text('Task updated successfully!'),
+            duration: Duration(seconds: 4),
+          ),
         );
       }
     }
@@ -204,28 +207,28 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
 
   void _deleteTask() async {
     final title = widget.task.title;
-    ref.read(selectedTaskIdProvider.notifier).select(null);
-    await ref
-        .read(todoListControllerProvider.notifier)
-        .softDeleteTask(widget.task.id);
+    final taskId = widget.task.id;
+    final todoListController = ref.read(todoListControllerProvider.notifier);
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('"$title" moved to trash'),
-          action: SnackBarAction(
-            label: 'Undo',
-            onPressed: () {
-              ref
-                  .read(todoListControllerProvider.notifier)
-                  .restoreTask(widget.task.id);
-            },
-          ),
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text('"$title" moved to trash'),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            todoListController.restoreTask(taskId);
+          },
         ),
-      );
-    }
+      ),
+    );
+
+    ref.read(selectedTaskIdProvider.notifier).select(null);
+    await todoListController.softDeleteTask(taskId);
   }
+
 
   Widget _buildPriorityButton(
     TaskPriority priority,

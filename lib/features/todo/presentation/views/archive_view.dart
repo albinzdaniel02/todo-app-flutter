@@ -118,6 +118,7 @@ class ArchiveView extends ConsumerWidget {
                                         content: Text(
                                           '"${task.title}" unarchived',
                                         ),
+                                        duration: const Duration(seconds: 4),
                                       ),
                                     );
                                   }
@@ -128,14 +129,23 @@ class ArchiveView extends ConsumerWidget {
                                 icon: const Icon(Icons.delete_outline),
                                 tooltip: 'Move to Trash',
                                 onPressed: () async {
-                                  await ref
-                                      .read(todoListControllerProvider.notifier)
-                                      .softDeleteTask(task.id);
+                                  final todoListController = ref.read(todoListControllerProvider.notifier);
+                                  final taskId = task.id;
+                                  final taskTitle = task.title;
+
+                                  await todoListController.softDeleteTask(taskId);
                                   if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
+                                    final messenger = ScaffoldMessenger.of(context);
+                                    messenger.hideCurrentSnackBar();
+                                    messenger.showSnackBar(
                                       SnackBar(
-                                        content: Text(
-                                          '"${task.title}" moved to trash',
+                                        content: Text('"$taskTitle" moved to trash'),
+                                        duration: const Duration(seconds: 4),
+                                        action: SnackBarAction(
+                                          label: 'Undo',
+                                          onPressed: () {
+                                            todoListController.restoreTask(taskId);
+                                          },
                                         ),
                                       ),
                                     );

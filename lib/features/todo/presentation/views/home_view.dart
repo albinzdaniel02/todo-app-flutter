@@ -330,26 +330,28 @@ class _TodoTabState extends ConsumerState<TodoTab> {
                     },
                     onDismissed: (direction) {
                       if (direction == DismissDirection.endToStart) {
-                        ref
-                            .read(todoListControllerProvider.notifier)
-                            .softDeleteTask(task.id);
+                        final todoListController = ref.read(todoListControllerProvider.notifier);
+                        final taskId = task.id;
+                        final taskTitle = task.title;
 
-                        if (selectedTaskId == task.id) {
+                        todoListController.softDeleteTask(taskId);
+
+                        if (selectedTaskId == taskId) {
                           ref
                               .read(selectedTaskIdProvider.notifier)
                               .select(null);
                         }
 
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        final messenger = ScaffoldMessenger.of(context);
+                        messenger.hideCurrentSnackBar();
+                        messenger.showSnackBar(
                           SnackBar(
-                            content: Text('"${task.title}" moved to trash'),
+                            content: Text('"$taskTitle" moved to trash'),
+                            duration: const Duration(seconds: 4),
                             action: SnackBarAction(
                               label: 'Undo',
                               onPressed: () {
-                                ref
-                                    .read(todoListControllerProvider.notifier)
-                                    .restoreTask(task.id);
+                                todoListController.restoreTask(taskId);
                               },
                             ),
                           ),
@@ -581,11 +583,12 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                                 .read(categoryListControllerProvider.notifier)
                                 .addCategory(name: name, colorHex: colorHex);
                             _categoryNameController.clear();
-                            if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Tag "$name" created!')),
+                                SnackBar(
+                                  content: Text('Tag "$name" created!'),
+                                  duration: const Duration(seconds: 4),
+                                ),
                               );
-                            }
                           }
                         },
                         child: const Text('Add Tag'),

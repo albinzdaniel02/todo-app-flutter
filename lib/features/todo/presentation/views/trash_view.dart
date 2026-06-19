@@ -139,6 +139,7 @@ class TrashView extends ConsumerWidget {
                                         content: Text(
                                           '"${task.title}" restored',
                                         ),
+                                        duration: const Duration(seconds: 4),
                                       ),
                                     );
                                   }
@@ -222,9 +223,12 @@ class TrashView extends ConsumerWidget {
               await ref.read(todoListControllerProvider.notifier).emptyTrash();
               if (context.mounted) {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('Trash emptied')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Trash emptied'),
+                    duration: Duration(seconds: 4),
+                  ),
+                );
               }
             },
             child: const Text('Empty Trash'),
@@ -266,6 +270,7 @@ class TrashView extends ConsumerWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('"${task.title}" permanently deleted'),
+                    duration: const Duration(seconds: 4),
                   ),
                 );
               }
