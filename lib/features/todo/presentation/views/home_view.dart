@@ -581,11 +581,12 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                           if (name.isNotEmpty) {
                             final colorHex =
                                 '#${_selectedColor.toARGB32().toRadixString(16).substring(2)}';
+                            final messenger = ScaffoldMessenger.of(context);
                             await ref
                                 .read(categoryListControllerProvider.notifier)
                                 .addCategory(name: name, colorHex: colorHex);
                             _categoryNameController.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(
+                            messenger.showSnackBar(
                               SnackBar(
                                 content: Text('Tag "$name" created!'),
                                 duration: const Duration(seconds: 4),
