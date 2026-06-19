@@ -211,14 +211,13 @@ class TrashView extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            key: const Key('confirmEmptyTrashButton'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Theme.of(context).colorScheme.onError,
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
+          ),
+          TextButton(
+            key: const Key('confirmEmptyTrashButton'),
             onPressed: () async {
               final messenger = ScaffoldMessenger.of(context);
               await ref.read(todoListControllerProvider.notifier).emptyTrash();
@@ -233,7 +232,10 @@ class TrashView extends ConsumerWidget {
                 ),
               );
             },
-            child: const Text('Empty Trash'),
+            child: Text(
+              'Empty Trash',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),
@@ -255,14 +257,13 @@ class TrashView extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            key: Key('confirmDeletePerm_${task.id}'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Theme.of(context).colorScheme.onError,
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
+          ),
+          TextButton(
+            key: Key('confirmDeletePerm_${task.id}'),
             onPressed: () async {
               final messenger = ScaffoldMessenger.of(context);
               await ref
@@ -279,7 +280,10 @@ class TrashView extends ConsumerWidget {
                 ),
               );
             },
-            child: const Text('Delete'),
+            child: Text(
+              'Delete',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),
