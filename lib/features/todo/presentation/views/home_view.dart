@@ -350,6 +350,7 @@ class _TodoTabState extends ConsumerState<TodoTab> {
                           SnackBar(
                             content: Text('"$taskTitle" moved to trash'),
                             duration: const Duration(seconds: 4),
+                            persist: false,
                             action: SnackBarAction(
                               label: 'Undo',
                               onPressed: () {
