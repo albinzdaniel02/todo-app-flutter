@@ -150,6 +150,7 @@ class ArchiveView extends ConsumerWidget {
                                         '"$taskTitle" moved to trash',
                                       ),
                                       duration: const Duration(seconds: 4),
+                                      persist: false,
                                       action: SnackBarAction(
                                         label: 'Undo',
                                         onPressed: () {

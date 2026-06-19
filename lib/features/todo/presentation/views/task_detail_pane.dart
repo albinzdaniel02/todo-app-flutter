@@ -216,6 +216,7 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
       SnackBar(
         content: Text('"$title" moved to trash'),
         duration: const Duration(seconds: 4),
+        persist: false,
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
@@ -240,6 +241,7 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
       SnackBar(
         content: Text('"$title" archived'),
         duration: const Duration(seconds: 4),
+        persist: false,
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
@@ -264,6 +266,7 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
       SnackBar(
         content: Text('"$title" restored to active list'),
         duration: const Duration(seconds: 4),
+        persist: false,
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
