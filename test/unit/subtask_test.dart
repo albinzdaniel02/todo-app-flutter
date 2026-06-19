@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/features/todo/data/models/subtask.dart';
 
+import 'package:todo_app/features/todo/domain/entities/subtask.dart';
+
 void main() {
   group('SubtaskModel Tests', () {
     const tId = '1f33f11d-2831-419b-ab0d-b8d9e2db3db1';
@@ -72,6 +74,14 @@ void main() {
       expect(domain.id, tId);
       expect(domain.title, tTitle);
       expect(domain.isCompleted, tIsCompleted);
+    });
+
+    test('fromDomain should convert from Subtask domain entity correctly', () {
+      const domain = Subtask(id: tId, title: tTitle, isCompleted: tIsCompleted);
+      final model = SubtaskModel.fromDomain(domain);
+      expect(model.id, tId);
+      expect(model.title, tTitle);
+      expect(model.isCompleted, tIsCompleted);
     });
   });
 }

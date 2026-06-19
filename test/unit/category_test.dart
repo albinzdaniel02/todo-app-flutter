@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/features/todo/data/models/category.dart';
 
+import 'package:todo_app/features/category/domain/entities/category.dart';
+
 void main() {
   group('CategoryModel Tests', () {
     const tId = '1f33f11d-2831-419b-ab0d-b8d9e2db3db1';
@@ -91,6 +93,20 @@ void main() {
       expect(domain.name, tName);
       expect(domain.colorHex, tColorHex);
       expect(domain.iconCodePoint, tIconCodePoint);
+    });
+
+    test('fromDomain should convert from Category domain entity correctly', () {
+      const domain = Category(
+        id: tId,
+        name: tName,
+        colorHex: tColorHex,
+        iconCodePoint: tIconCodePoint,
+      );
+      final model = CategoryModel.fromDomain(domain);
+      expect(model.id, tId);
+      expect(model.name, tName);
+      expect(model.colorHex, tColorHex);
+      expect(model.iconCodePoint, tIconCodePoint);
     });
   });
 }

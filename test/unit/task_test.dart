@@ -3,6 +3,8 @@ import 'package:todo_app/features/todo/data/models/task.dart';
 import 'package:todo_app/features/todo/data/models/subtask.dart';
 import 'package:todo_app/features/todo/domain/entities/task.dart' as domain;
 
+import 'package:todo_app/features/todo/domain/entities/subtask.dart';
+
 void main() {
   group('TaskModel Tests', () {
     const tId = 'e9b25fb3-96b6-4554-bc0f-c89b0d62dcf0';
@@ -139,6 +141,88 @@ void main() {
       expect(domainTask.isArchived, tIsArchived);
       expect(domainTask.isDeleted, tIsDeleted);
       expect(domainTask.createdAt, tCreatedAt);
+    });
+
+    test('fromDomain should convert from Task domain entity correctly', () {
+      final domainTask = domain.Task(
+        id: tId,
+        title: tTitle,
+        description: tDescription,
+        isCompleted: tIsCompleted,
+        priority: domain.TaskPriority.high,
+        dueDate: tDueDate,
+        categoryId: tCategoryId,
+        subtasks: const [
+          Subtask(
+            id: '1f33f11d-2831-419b-ab0d-b8d9e2db3db1',
+            title: 'Buy milk',
+            isCompleted: true,
+          ),
+        ],
+        isArchived: tIsArchived,
+        isDeleted: tIsDeleted,
+        createdAt: tCreatedAt,
+      );
+
+      final model = TaskModel.fromDomain(domainTask);
+
+      expect(model, equals(tTask1));
+    });
+  });
+
+  group('TaskPriorityModel Tests', () {
+    test('fromString should parse priority string correctly', () {
+      expect(
+        TaskPriorityModel.fromString('low'),
+        equals(TaskPriorityModel.low),
+      );
+      expect(
+        TaskPriorityModel.fromString('medium'),
+        equals(TaskPriorityModel.medium),
+      );
+      expect(
+        TaskPriorityModel.fromString('high'),
+        equals(TaskPriorityModel.high),
+      );
+      expect(
+        TaskPriorityModel.fromString('HIGH'),
+        equals(TaskPriorityModel.high),
+      );
+      expect(
+        TaskPriorityModel.fromString(null),
+        equals(TaskPriorityModel.medium),
+      );
+      expect(
+        TaskPriorityModel.fromString('invalid'),
+        equals(TaskPriorityModel.medium),
+      );
+    });
+
+    test('toDomain should convert correctly', () {
+      expect(TaskPriorityModel.low.toDomain(), equals(domain.TaskPriority.low));
+      expect(
+        TaskPriorityModel.medium.toDomain(),
+        equals(domain.TaskPriority.medium),
+      );
+      expect(
+        TaskPriorityModel.high.toDomain(),
+        equals(domain.TaskPriority.high),
+      );
+    });
+
+    test('fromDomain should convert correctly', () {
+      expect(
+        TaskPriorityModel.fromDomain(domain.TaskPriority.low),
+        equals(TaskPriorityModel.low),
+      );
+      expect(
+        TaskPriorityModel.fromDomain(domain.TaskPriority.medium),
+        equals(TaskPriorityModel.medium),
+      );
+      expect(
+        TaskPriorityModel.fromDomain(domain.TaskPriority.high),
+        equals(TaskPriorityModel.high),
+      );
     });
   });
 }
