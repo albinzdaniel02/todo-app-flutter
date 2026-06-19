@@ -9,6 +9,11 @@ This skill guides the AI assistant through the process of implementing the Flutt
 
 ## Mandatory Workflow Instructions
 
+### Critical Guidelines: No Direct Pushes to Main
+- **NEVER push changes directly to the `main` branch.**
+- A local pre-push hook is active at `.git/hooks/pre-push` to reject direct pushes to `main`.
+- Always implement changes on a task-specific branch, format the code, verify tests, push the branch, and merge it via a Pull Request.
+
 For every task listed in [todo.md](file:///C:/Users/ALBIN/Desktop/main/Albin/DEV/todo-app/todo.md) (e.g., `P0-1`, `P1-2`), the agent must execute the following workflow steps:
 
 ### 1. Identify the Next Task
