@@ -229,6 +229,54 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
     await todoListController.softDeleteTask(taskId);
   }
 
+  void _archiveTask() async {
+    final title = widget.task.title;
+    final taskId = widget.task.id;
+    final todoListController = ref.read(todoListControllerProvider.notifier);
+
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text('"$title" archived'),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            todoListController.restoreTask(taskId);
+          },
+        ),
+      ),
+    );
+
+    ref.read(selectedTaskIdProvider.notifier).select(null);
+    await todoListController.archiveTask(taskId);
+  }
+
+  void _restoreTask() async {
+    final title = widget.task.title;
+    final taskId = widget.task.id;
+    final todoListController = ref.read(todoListControllerProvider.notifier);
+
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text('"$title" restored to active list'),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            todoListController.archiveTask(taskId);
+          },
+        ),
+      ),
+    );
+
+    ref.read(selectedTaskIdProvider.notifier).select(null);
+    await todoListController.restoreTask(taskId);
+  }
+
   Widget _buildPriorityButton(
     TaskPriority priority,
     String label,
@@ -689,6 +737,37 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
                     onPressed: _deleteTask,
                   ),
                 ),
+                const SizedBox(width: 12),
+                if (!widget.task.isArchived)
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      key: const Key('detailArchiveButton'),
+                      icon: const Icon(Icons.archive_outlined),
+                      label: const Text('Archive'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: _archiveTask,
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      key: const Key('detailRestoreButton'),
+                      icon: const Icon(Icons.unarchive_outlined),
+                      label: const Text('Restore'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: _restoreTask,
+                    ),
+                  ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
