@@ -229,7 +229,6 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
     await todoListController.softDeleteTask(taskId);
   }
 
-
   Widget _buildPriorityButton(
     TaskPriority priority,
     String label,
@@ -260,7 +259,7 @@ class _TaskDetailEditorState extends ConsumerState<TaskDetailEditor> {
               color: isSelected
                   ? selectedBorder
                   : theme.colorScheme.outline.withAlpha(60),
-              width: isSelected ? 2 : 1,
+              width: 2,
             ),
           ),
           alignment: Alignment.center,

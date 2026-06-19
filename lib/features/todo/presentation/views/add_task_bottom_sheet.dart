@@ -115,7 +115,7 @@ class _AddTaskBottomSheetState extends ConsumerState<AddTaskBottomSheet> {
               color: isSelected
                   ? selectedBorder
                   : theme.colorScheme.outline.withAlpha(60),
-              width: isSelected ? 2 : 1,
+              width: 2,
             ),
             boxShadow: isSelected
                 ? [

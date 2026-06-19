@@ -330,7 +330,9 @@ class _TodoTabState extends ConsumerState<TodoTab> {
                     },
                     onDismissed: (direction) {
                       if (direction == DismissDirection.endToStart) {
-                        final todoListController = ref.read(todoListControllerProvider.notifier);
+                        final todoListController = ref.read(
+                          todoListControllerProvider.notifier,
+                        );
                         final taskId = task.id;
                         final taskTitle = task.title;
 
@@ -583,12 +585,12 @@ class _TagsTabState extends ConsumerState<TagsTab> {
                                 .read(categoryListControllerProvider.notifier)
                                 .addCategory(name: name, colorHex: colorHex);
                             _categoryNameController.clear();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Tag "$name" created!'),
-                                  duration: const Duration(seconds: 4),
-                                ),
-                              );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Tag "$name" created!'),
+                                duration: const Duration(seconds: 4),
+                              ),
+                            );
                           }
                         },
                         child: const Text('Add Tag'),
