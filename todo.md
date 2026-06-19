@@ -124,8 +124,8 @@ This checklist tracks progress throughout the implementation phase. Each task co
 
 - [x] **P7-1**: Write unit tests for database models and Riverpod state controllers.
 - [x] **P7-2**: Write widget tests checking light/dark mode and responsive layouts.
-- [ ] **P7-3**: Conduct manual QA validations for database state persistence and offline usage.
+- [x] **P7-3**: Conduct manual QA validations for database state persistence and offline usage.
 
 ### P7 Exit Checks
-- [ ] 100% of unit and widget tests pass.
-- [ ] Database state survives full application restarts and web refreshes.
+- [x] 100% of unit and widget tests pass.
+- [x] Database state survives full application restarts and web refreshes.
